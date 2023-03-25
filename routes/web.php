@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\PeriodeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -11,8 +13,12 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(IndexController::class)->group(function () {
+    Route::get('/', 'index');
+});
+
+Route::controller(PeriodeController::class)->group(function () {
+    Route::get('/periode', 'index');
 });
