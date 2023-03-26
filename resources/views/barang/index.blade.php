@@ -24,33 +24,14 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Periode</th>
+                                    <th>Nama</th>
+                                    <th>Merk</th>
+                                    <th>Total</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>23-02-2023</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-success">
-                                            <i class="fa fa-pencil-alt"></i> 
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2</td>
-                                    <td>24-02-2023</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-success">
-                                            <i class="fa fa-pencil-alt"></i> 
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -61,5 +42,5 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ asset('assets/js/periode.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/barang.js') }}"></script>
 @endsection

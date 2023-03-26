@@ -38,19 +38,19 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/karyawan') }}" class="nav-link">
                     <i class="nav-icon fa fa-table"></i>
                     <p>Data Karyawan</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/penggajian') }}" class="nav-link">
                     <i class="nav-icon fa fa-table"></i>
                     <p>Data Penggajian</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/barang') }}" class="nav-link">
                     <i class="nav-icon fa fa-table"></i>
                     <p>Data Barang</p>
                 </a>
