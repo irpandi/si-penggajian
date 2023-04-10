@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,22 +19,44 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
-Route::controller(IndexController::class)->group(function () {
-    Route::get('/', 'index');
+Route::controller(UserController::class)->group(function () {
+    Route::prefix('login')->group(function () {
+        Route::name('login.')->group(function () {
+            Route::get('/', 'loginForm');
+            Route::post('/', 'login')->name('signin');
+            Route::get('/logout', 'logout')->name('signout');
+        });
+    });
 });
 
-Route::controller(PeriodeController::class)->group(function () {
-    Route::get('/periode', 'index');
-});
+Route::middleware('login')->group(function () {
+    Route::controller(IndexController::class)->group(function () {
+        Route::prefix('/')->group(function () {
+            Route::name('home.')->group(function () {
+                Route::get('/', 'index')->name('index');
+            });
+        });
+    });
 
-Route::controller(KaryawanController::class)->group(function () {
-    Route::get('/karyawan', 'index');
-});
+    Route::controller(PeriodeController::class)->group(function () {
+        Route::prefix('periode')->group(function () {
+            Route::name('periode.')->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/list', 'dataTables')->name('list');
+            });
+        });
+    });
 
-Route::controller(PenggajianController::class)->group(function () {
-    Route::get('/penggajian', 'index');
-});
+    Route::controller(KaryawanController::class)->group(function () {
+        Route::get('/karyawan', 'index');
+    });
 
-Route::controller(BarangController::class)->group(function () {
-    Route::get('/barang', 'index');
+    Route::controller(PenggajianController::class)->group(function () {
+        Route::get('/penggajian', 'index');
+    });
+
+    Route::controller(BarangController::class)->group(function () {
+        Route::get('/barang', 'index');
+    });
 });

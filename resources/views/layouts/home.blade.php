@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         @include('layouts.home-head')
         <title>HD Collection - {{ $title ?? 'Page' }}</title>
         @yield('css')
     </head>
 
     <body class="hold-transition sidebar-mini layout-fixed">
+        @yield('modal')
+        
         <div class="wrapper">
             @include('layouts.home-navbar')
 

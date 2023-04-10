@@ -16,6 +16,7 @@ class IndexController extends Controller
         $data = array(
             'title'       => 'Home',
             'breadcrumbs' => '<li class="breadcrumb-item">Home</li>',
+            'user'        => $this->currentUser(),
         );
 
         return view('index.index', compact('data'));

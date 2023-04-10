@@ -9,7 +9,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        <h3>Hello User, Selamat Datang di Aplikasi Penggajian</h3>
+                        <h3>Hello {{ $data['user']->name }}, Selamat Datang di Aplikasi Penggajian</h3>
                     </div>
                 </div>
             </div>

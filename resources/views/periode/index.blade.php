@@ -3,8 +3,58 @@
     'breadcrumbs' => $data['breadcrumbs']
 ])
 
+@section('modal')
+    {{-- Modal Add --}}
+    <div class="modal fade" id="modal-add">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Periode</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="{{ route('periode.store') }}" method="post" id="formPeriodeAdd">
+                        @csrf
+                        <div class="form-group">
+                            <div class="input-group date" id="periodeDate" data-target-input="nearest">
+                                <input type="text" name="tglPeriode" class="form-control datetimepicker-input" placeholder="Pilih tanggal" data-target="#periodeDate" data-toggle="datetimepicker">
+                                <div class="input-group-append" data-target="#periodeDate" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer justify-content-end">
+                    <button type="button" class="btn btn-sm btn-primary" id="periodeSave">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('content')
     <section class="content">
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show errorAlert" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -12,10 +62,10 @@
                         <div class="card-title">{{ $data['title'] }}</div>
 
                         <div class="card-tools">
-                            <a href="#" class="btn btn-sm btn-primary">
+                            <button type="button" class="btn btn-sm btn-primary" data-target="#modal-add" data-toggle="modal">
                                 <i class="fa fa-plus-circle"></i> 
                                 Tambah
-                            </a>
+                            </button>
                         </div>
                     </div>
                     
@@ -29,29 +79,7 @@
                                 </tr>
                             </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>23-02-2023</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-success">
-                                            <i class="fa fa-pencil-alt"></i> 
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>2</td>
-                                    <td>24-02-2023</td>
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-success">
-                                            <i class="fa fa-pencil-alt"></i> 
-                                            Edit
-                                        </a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -61,5 +89,9 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ asset('assets/js/periode.js') }}"></script>
+<script type="text/javascript">
+    var routeList = "{{ route('periode.list') }}";
+</script>
+<script type="text/javascript" src="{{ asset('assets/js/periode.js?nocache='.time()) }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/global.js?nocache='.time()) }}"></script>
 @endsection

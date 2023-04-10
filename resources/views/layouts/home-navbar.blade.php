@@ -11,6 +11,13 @@
             <a href="#" class="nav-link">Aplikasi Penggajian HD Collection</a>
         </li>
     </ul>
+
+    {{-- Right Navbar Links --}}
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a href="{{ route('login.signout') }}" class="nav-link">Sign Out</a>
+        </li>
+    </ul>
 </nav>
 {{-- End Navbar --}}
 
@@ -23,40 +30,42 @@
     </a>
 
     {{-- Side bar menu --}}
-    <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-item">
-                <a href="{{ url('/') }}" class="nav-link">
-                    <i class="nav-icon fa fa-home"></i>
-                    <p>Home</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/periode') }}" class="nav-link">
-                    <i class="nav-icon fa fa-calendar"></i>
-                    <p>Data Periode</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/karyawan') }}" class="nav-link">
-                    <i class="nav-icon fa fa-table"></i>
-                    <p>Data Karyawan</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/penggajian') }}" class="nav-link">
-                    <i class="nav-icon fa fa-table"></i>
-                    <p>Data Penggajian</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="{{ url('/barang') }}" class="nav-link">
-                    <i class="nav-icon fa fa-table"></i>
-                    <p>Data Barang</p>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ url('/') }}" class="nav-link">
+                        <i class="nav-icon fa fa-home"></i>
+                        <p>Home</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/periode') }}" class="nav-link">
+                        <i class="nav-icon fa fa-calendar"></i>
+                        <p>Data Periode</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/karyawan') }}" class="nav-link">
+                        <i class="nav-icon fa fa-table"></i>
+                        <p>Data Karyawan</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/penggajian') }}" class="nav-link">
+                        <i class="nav-icon fa fa-table"></i>
+                        <p>Data Penggajian</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/barang') }}" class="nav-link">
+                        <i class="nav-icon fa fa-table"></i>
+                        <p>Data Barang</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     {{-- End side bar menu --}}
 </aside>
 {{-- End Main Sidebar --}}
