@@ -42,8 +42,10 @@ Route::middleware('login')->group(function () {
         Route::prefix('periode')->group(function () {
             Route::name('periode.')->group(function () {
                 Route::get('/', 'index');
-                Route::post('/', 'store')->name('store');
                 Route::get('/list', 'dataTables')->name('list');
+                Route::put('/{id}', 'update')->name('update');
+                Route::get('/{id}', 'view')->name('view');
+                Route::post('/', 'store')->name('store');
             });
         });
     });

@@ -31,7 +31,7 @@
                     <form method="post" action="{{ route('login.signin') }}">
                         @csrf
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="username" placeholder="Username or Email" required>
+                            <input type="text" class="form-control" name="username" placeholder="Username" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-user"></span>

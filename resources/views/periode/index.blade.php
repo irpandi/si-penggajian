@@ -4,23 +4,24 @@
 ])
 
 @section('modal')
-    {{-- Modal Add --}}
-    <div class="modal fade" id="modal-add">
-        <div class="modal-dialog modal-sm">
+    {{-- Modal Template --}}
+    <div class="modal fade modal-template">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tambah Periode</h4>
+                    <h4 class="modal-title" id="titleModal"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
                 <div class="modal-body">
-                    <form action="{{ route('periode.store') }}" method="post" id="formPeriodeAdd">
+                    <form id="formPeriodeTemplate">
                         @csrf
+                        <input type="hidden" name="_method" id="method">
                         <div class="form-group">
                             <div class="input-group date" id="periodeDate" data-target-input="nearest">
-                                <input type="text" name="tglPeriode" class="form-control datetimepicker-input" placeholder="Pilih tanggal" data-target="#periodeDate" data-toggle="datetimepicker">
+                                <input type="text" name="tglPeriode" class="form-control datetimepicker-input" placeholder="Pilih tanggal" id="inputPeriodeDate" data-target="#periodeDate" data-toggle="datetimepicker">
                                 <div class="input-group-append" data-target="#periodeDate" data-toggle="datetimepicker">
                                     <div class="input-group-text">
                                         <i class="fa fa-calendar-alt"></i>
@@ -62,7 +63,7 @@
                         <div class="card-title">{{ $data['title'] }}</div>
 
                         <div class="card-tools">
-                            <button type="button" class="btn btn-sm btn-primary" data-target="#modal-add" data-toggle="modal">
+                            <button type="button" class="btn btn-sm btn-primary" id="btnTambahPeriode" data-target=".modal-template" data-toggle="modal">
                                 <i class="fa fa-plus-circle"></i> 
                                 Tambah
                             </button>
@@ -90,8 +91,16 @@
 
 @section('script')
 <script type="text/javascript">
-    var routeList = "{{ route('periode.list') }}";
+    var routeList = "{{ route('periode.list') }}",
+        routeAdd = "{{ route('periode.store') }}",
+        routeUpdate = "{{ route('periode.update', ':id') }}",
+        routeView = "{{ route('periode.view', ':id') }}";
 </script>
-<script type="text/javascript" src="{{ asset('assets/js/periode.js?nocache='.time()) }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/global.js?nocache='.time()) }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/periode.js?nocache='.time()) }}"></script>
+@if(session('status'))
+<script type="text/javascript">
+    customSweetAlert('success', 'Sukses', "{{ session('status') }}");
+</script>
+@endif
 @endsection

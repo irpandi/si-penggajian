@@ -17,8 +17,8 @@ class UserController extends Controller
     public function login(Request $req)
     {
         $credentials = $req->validate([
-            'username' => ['required'],
-            'password' => ['required'],
+            'username' => 'required',
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PeriodeRequest;
 use App\Http\Service\General;
 use App\Models\Periode;
 use DataTables;
-use Illuminate\Http\Request;
 
 class PeriodeController extends Controller
 {
@@ -22,17 +22,17 @@ class PeriodeController extends Controller
     // * Method for dataTables
     public function dataTables()
     {
-        $data = Periode::select('tgl_periode')
+        $data = Periode::select('id', 'tgl_periode')
             ->orderBy('created_at', 'desc')
             ->get();
 
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
-                $btn = '<a href="#" class="btn btn-sm btn-success">
+                $btn = '<button type="button" class="btn btn-sm btn-success btnEditPeriode" data-target=".modal-template" data-id="' . $row->id . '" data-toggle="modal">
                     <i class="fa fa-pencil-alt"></i>
                     Edit
-                </a>';
+                </button>';
 
                 return $btn;
             })
@@ -46,19 +46,39 @@ class PeriodeController extends Controller
     }
 
     // * Method for add periode
-    public function store(Request $req)
+    public function store(PeriodeRequest $req)
     {
-        $req->validate([
-            'tglPeriode' => 'required',
-        ]);
-
         $tglPeriode = $req->tglPeriode;
-        $newDate    = General::manageDate('d/m/Y', $tglPeriode, 'Y-m-d');
 
-        Periode::create([
-            'tgl_periode' => $newDate,
-        ]);
+        $create = array(
+            'tgl_periode' => $tglPeriode,
+        );
 
-        return redirect()->back();
+        Periode::create($create);
+
+        return back()->with('status', 'Tambah Periode Berhasil');
+    }
+
+    // * Method for update periode
+    public function update(PeriodeRequest $req, $id)
+    {
+        $tglPeriode = $req->tglPeriode;
+
+        $update = array(
+            'tgl_periode' => $tglPeriode,
+        );
+
+        Periode::where('id', $id)
+            ->update($update);
+
+        return back()->with('status', 'Edit Periode Berhasil');
+    }
+
+    // * Method for view periode
+    public function view($id)
+    {
+        $data = Periode::find($id);
+
+        return response()->json($data);
     }
 }
