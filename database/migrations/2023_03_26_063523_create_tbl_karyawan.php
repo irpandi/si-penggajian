@@ -20,6 +20,8 @@ return new class extends Migration
             $table->bigInteger('nik')->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->boolean('status')->default(true);
+            $table->text('no_hp')->nullable();
+            $table->text('alamat')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();

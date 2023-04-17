@@ -3,6 +3,9 @@ $(function () {
         $(".errorAlert").slideUp(8000);
     });
 
+    $('.select2Default').select2({
+        theme: 'bootstrap4'
+    });
 });
 
 // * Function change date to DMY

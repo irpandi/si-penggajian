@@ -51,7 +51,13 @@ Route::middleware('login')->group(function () {
     });
 
     Route::controller(KaryawanController::class)->group(function () {
-        Route::get('/karyawan', 'index');
+        Route::prefix('karyawan')->group(function () {
+            Route::name('karyawan.')->group(function () {
+                Route::get('/', 'index');
+                Route::get('/list', 'dataTables')->name('list');
+                Route::post('/', 'store')->name('store');
+            });
+        });
     });
 
     Route::controller(PenggajianController::class)->group(function () {

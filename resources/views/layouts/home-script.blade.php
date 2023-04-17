@@ -29,3 +29,7 @@
 <script src="{{ asset('assets/dist/js/adminlte.js') }}"></script>
 <!-- SweetAlert2 -->
 <script src="{{ asset('assets/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<!-- Select2 -->
+<script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}"></script>
+{{-- Custom JS --}}
+<script src="{{ asset('assets/js/global.js?nocache='.time()) }}"></script>

@@ -96,7 +96,6 @@
         routeUpdate = "{{ route('periode.update', ':id') }}",
         routeView = "{{ route('periode.view', ':id') }}";
 </script>
-<script type="text/javascript" src="{{ asset('assets/js/global.js?nocache='.time()) }}"></script>
 <script type="text/javascript" src="{{ asset('assets/js/periode.js?nocache='.time()) }}"></script>
 @if(session('status'))
 <script type="text/javascript">
