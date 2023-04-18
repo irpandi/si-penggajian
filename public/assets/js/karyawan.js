@@ -88,6 +88,26 @@ $(function () {
         customSweetAlertConfirm('Apakah anda yakin ?', 'Ya', 'Tidak', dataAjax);
         routeDestroy = routeDestroy.replace(id, ':id');
     });
+
+    // * Action for on click button status karyawan
+    $(this).on('click', '.btnStatus', function () {
+        let id = $(this).data('id'),
+            status = $(this).data('status');
+
+        routeStatusKaryawan = routeStatusKaryawan.replace(':id', id);
+
+        let dataAjax = {
+            route: routeStatusKaryawan,
+            method: 'PUT',
+            dataTableId: '#index',
+            dataSend: {
+                status: status
+            }
+        };
+
+        customSweetAlertConfirm('Apakah anda yakin ?', 'Ya', 'Tidak', dataAjax);
+        routeStatusKaryawan = routeStatusKaryawan.replace(id, ':id');
+    });
 });
 
 // * For fill data karyawan in modal

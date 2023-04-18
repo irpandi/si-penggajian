@@ -59,6 +59,7 @@ Route::middleware('login')->group(function () {
                 Route::get('/{id}', 'view')->name('view');
                 Route::put('/{id}', 'update')->name('update');
                 Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::put('/status/{id}', 'statusKaryawan')->name('statusKaryawan');
             });
         });
     });

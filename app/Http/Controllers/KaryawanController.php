@@ -6,6 +6,7 @@ use App\Http\Requests\KaryawanRequest;
 use App\Http\Service\General;
 use App\Models\Karyawan;
 use DataTables;
+use Illuminate\Http\Request;
 
 class KaryawanController extends Controller
 {
@@ -35,11 +36,16 @@ class KaryawanController extends Controller
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
+                $btnStatus = '<button type="button" class="btn btn-sm btn-info btnStatus" data-id="' . $row->id . '" data-status="1">Aktif</button>';
+
+                if ($row->status == 1) {
+                    $btnStatus = '<button type="button" class="btn btn-sm btn-warning btnStatus" data-id="' . $row->id . '" data-status="0">Non Aktif</button>';
+                }
+
                 $btn = '
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-success btnEdit" data-target=".modalTemplate" data-id="' . $row->id . '" data-toggle="modal">Edit</button>
-                        <button type="button" class="btn btn-sm btn-danger btnDelete" data-id="' . $row->id . '">Delete</button>
-                        <button type="button" class="btn btn-sm btn-warning">Non Aktif</button>
+                        <button type="button" class="btn btn-sm btn-danger btnDelete" data-id="' . $row->id . '">Delete</button>' . $btnStatus . '
                     </div>
                 ';
 
@@ -121,7 +127,7 @@ class KaryawanController extends Controller
         return back()->with('status', 'Edit Karyawan Berhasil');
     }
 
-    // * Method for soft delete karyawan & aktif / non-aktif karyawan.
+    // * Method for soft delete karyawan
     public function destroy($id)
     {
         $message    = 'Berhasil hapus karyawan';
@@ -130,6 +136,26 @@ class KaryawanController extends Controller
 
         $karyawan = Karyawan::findOrFail($id);
         $karyawan->delete();
+
+        $response = array(
+            'message'    => $message,
+            'iconStatus' => $iconStatus,
+        );
+
+        return response()->json($response, $code);
+    }
+
+    // * Method aktif or non aktif karyawan
+    public function statusKaryawan(Request $req, $id)
+    {
+        $message    = 'Berhasil ganti status karyawan';
+        $iconStatus = 'success';
+        $code       = 200;
+
+        Karyawan::where('id', $id)
+            ->update([
+                'status' => $req->status,
+            ]);
 
         $response = array(
             'message'    => $message,

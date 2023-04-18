@@ -136,7 +136,8 @@
         routeView = "{{ route('karyawan.view', ':id') }}",
         routeUpdate = "{{ route('karyawan.update', ':id') }}",
         routeDestroy = "{{ route('karyawan.destroy', ':id') }}",
-        csrfToken = "{{ csrf_token() }}";
+        csrfToken = "{{ csrf_token() }}",
+        routeStatusKaryawan = "{{ route('karyawan.statusKaryawan', ':id') }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/karyawan.js?nocache='.time()) }}"></script>
 @if(session('status'))

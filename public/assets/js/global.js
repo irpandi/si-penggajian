@@ -35,6 +35,11 @@ function customSweetAlertConfirm(title, confirmText, denyButtonText, dataAjax) {
         confirmButtonText: confirmText,
         denyButtonText: denyButtonText
     }).then((result) => {
+        let route = dataAjax.route,
+            method = dataAjax.method,
+            dataTableId = dataAjax.dataTableId,
+            dataSend = dataAjax.dataSend ?? {};
+
         if (result.isConfirmed) {
             $.ajaxSetup({
                 headers: {
@@ -43,13 +48,14 @@ function customSweetAlertConfirm(title, confirmText, denyButtonText, dataAjax) {
             });
 
             $.ajax({
-                url: dataAjax.route,
-                type: dataAjax.method,
+                url: route,
+                type: method,
+                data: dataSend,
                 success: function (res) {
                     Swal.fire(res.message, '', res.iconStatus);
 
-                    if (dataAjax.dataTableId) {
-                        $(dataAjax.dataTableId).DataTable().ajax.reload();
+                    if (dataTableId) {
+                        $(dataTableId).DataTable().ajax.reload();
                     }
                 }, error: function (err) {
                     console.log(err);
