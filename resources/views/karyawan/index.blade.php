@@ -49,7 +49,7 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <select class="form-control select2Default select2Css" name="status">
+                            <select class="form-control select2Default select2Css" id="status" name="status">
                                 <option value="1">Aktif</option>
                                 <option value="0">Non Aktif</option>
                             </select>
@@ -132,7 +132,11 @@
 @section('script')
 <script type="text/javascript">
     var routeList = "{{ route('karyawan.list') }}",
-        routeAdd = "{{ route('karyawan.store') }}";
+        routeAdd = "{{ route('karyawan.store') }}",
+        routeView = "{{ route('karyawan.view', ':id') }}",
+        routeUpdate = "{{ route('karyawan.update', ':id') }}",
+        routeDestroy = "{{ route('karyawan.destroy', ':id') }}",
+        csrfToken = "{{ csrf_token() }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/karyawan.js?nocache='.time()) }}"></script>
 @if(session('status'))

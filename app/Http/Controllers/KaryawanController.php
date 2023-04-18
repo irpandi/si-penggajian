@@ -37,8 +37,8 @@ class KaryawanController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-success">Edit</button>
-                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="button" class="btn btn-sm btn-success btnEdit" data-target=".modalTemplate" data-id="' . $row->id . '" data-toggle="modal">Edit</button>
+                        <button type="button" class="btn btn-sm btn-danger btnDelete" data-id="' . $row->id . '">Delete</button>
                         <button type="button" class="btn btn-sm btn-warning">Non Aktif</button>
                     </div>
                 ';
@@ -84,5 +84,58 @@ class KaryawanController extends Controller
         Karyawan::create($create);
 
         return back()->with('status', 'Tambah Karyawan Berhasil');
+    }
+
+    // * Method for view data karyawan
+    public function view($id)
+    {
+        $data = Karyawan::find($id);
+
+        return response()->json($data);
+    }
+
+    // * Method for update data karyawan
+    public function update(KaryawanRequest $req, $id)
+    {
+        $nik          = $req->nik;
+        $nameKaryawan = $req->nameKaryawan;
+        $tmptLahir    = $req->tmptLahir;
+        $tglLahir     = General::manageDate('d/m/Y', $req->tglLahir, 'Y-m-d');
+        $status       = $req->status;
+        $noHp         = $req->noHp;
+        $alamat       = $req->alamat;
+
+        $update = array(
+            'nik'          => $nik,
+            'nama'         => $nameKaryawan,
+            'tempat_lahir' => $tmptLahir,
+            'tgl_lahir'    => $tglLahir,
+            'status'       => $status,
+            'no_hp'        => $noHp,
+            'alamat'       => $alamat,
+        );
+
+        Karyawan::where('id', $id)
+            ->update($update);
+
+        return back()->with('status', 'Edit Karyawan Berhasil');
+    }
+
+    // * Method for soft delete karyawan & aktif / non-aktif karyawan.
+    public function destroy($id)
+    {
+        $message    = 'Berhasil hapus karyawan';
+        $iconStatus = 'success';
+        $code       = 200;
+
+        $karyawan = Karyawan::findOrFail($id);
+        $karyawan->delete();
+
+        $response = array(
+            'message'    => $message,
+            'iconStatus' => $iconStatus,
+        );
+
+        return response()->json($response, $code);
     }
 }

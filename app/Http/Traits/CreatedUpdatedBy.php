@@ -22,5 +22,10 @@ trait CreatedUpdatedBy
                 $model->updated_by = $user->username;
             }
         });
+
+        static::deleting(function ($model) use ($user) {
+            $model->deleted_by = $user->username;
+            $model->save();
+        });
     }
 }

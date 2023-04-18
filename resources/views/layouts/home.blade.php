@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @include('layouts.home-head')
-        <title>HD Collection - {{ $title ?? 'Page' }}</title>
+        <title>HD Collection | {{ $title ?? 'Page' }}</title>
         @yield('css')
     </head>
 

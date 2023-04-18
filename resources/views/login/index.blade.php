@@ -5,14 +5,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         @include('layouts.home-head')
         
-        <title>Login - HD Collection</title>
+        <title>HD Collection | Login</title>
     </head>
 
     <body class="hold-transition login-page">
         <div class="login-box">
             <div class="card card-outline card-primary">
                 <div class="card-header text-center">
-                    <a href="#" class="h1"><b>HD</b> - Collection</a>
+                    <a href="#" class="h1"><b>HD</b> Collection</a>
                 </div>
 
                 <div class="card-body">

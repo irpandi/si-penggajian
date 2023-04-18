@@ -56,6 +56,9 @@ Route::middleware('login')->group(function () {
                 Route::get('/', 'index');
                 Route::get('/list', 'dataTables')->name('list');
                 Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'view')->name('view');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
             });
         });
     });

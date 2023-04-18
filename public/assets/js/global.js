@@ -26,3 +26,35 @@ function customSweetAlert(icon, title, msg) {
         text: msg,
     });
 }
+
+// * Function manage SweetAlert Confirmation
+function customSweetAlertConfirm(title, confirmText, denyButtonText, dataAjax) {
+    Swal.fire({
+        title: title,
+        showCancelButton: true,
+        confirmButtonText: confirmText,
+        denyButtonText: denyButtonText
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+
+            $.ajax({
+                url: dataAjax.route,
+                type: dataAjax.method,
+                success: function (res) {
+                    Swal.fire(res.message, '', res.iconStatus);
+
+                    if (dataAjax.dataTableId) {
+                        $(dataAjax.dataTableId).DataTable().ajax.reload();
+                    }
+                }, error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    });
+}
