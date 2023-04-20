@@ -13,27 +13,28 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_data_gaji', function (Blueprint $table) {
+        Schema::create('tbl_sub_item', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('karyawan_id')->nullable();
+            $table->unsignedBigInteger('periode_id')->nullable();
             $table->unsignedBigInteger('item_id')->nullable();
+            $table->bigInteger('total_pengerjaan_item')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
             $table->date('deleted_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('karyawan_id')
+            $table->foreign('periode_id')
                 ->references('id')
-                ->on('tbl_karyawan')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->on('tbl_periode')
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
 
             $table->foreign('item_id')
                 ->references('id')
                 ->on('tbl_item')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
         });
     }
 
@@ -44,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_data_gaji');
+        Schema::dropIfExists('tbl_sub_item');
     }
 };

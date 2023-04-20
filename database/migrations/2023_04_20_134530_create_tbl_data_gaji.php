@@ -13,21 +13,32 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_item', function (Blueprint $table) {
+        Schema::create('tbl_data_gaji', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('barang_id')->nullable();
-            $table->string('nama')->nullable();
-            $table->bigInteger('harga')->nullable();
-            $table->bigInteger('total_tmp_barang')->nullable();
+            $table->unsignedBigInteger('karyawan_id')->nullable();
+            $table->unsignedBigInteger('sub_item_id')->nullable();
+            $table->unsignedBigInteger('tunjangan_id')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
             $table->date('deleted_at')->nullable();
             $table->timestamps();
 
-            $table->foreign('barang_id')
+            $table->foreign('karyawan_id')
                 ->references('id')
-                ->on('tbl_barang')
+                ->on('tbl_karyawan')
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
+
+            $table->foreign('sub_item_id')
+                ->references('id')
+                ->on('tbl_sub_item')
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
+
+            $table->foreign('tunjangan_id')
+                ->references('id')
+                ->on('tbl_tunjangan')
                 ->onUpdate('NO ACTION')
                 ->onDelete('NO ACTION');
         });
@@ -40,6 +51,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_item');
+        Schema::dropIfExists('tbl_data_gaji');
     }
 };
