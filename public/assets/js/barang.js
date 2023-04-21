@@ -35,8 +35,6 @@ $(function () {
         $('#formTemplate').attr('method', '');
         $('#method').val('');
 
-        // routeListItem = routeListItem.replace(':id', id);
-
         // * Setup table for show item
         $('#tableItem').DataTable({
             processing: true,
@@ -57,7 +55,6 @@ $(function () {
         });
 
         routeShow = routeShow.replace(id, ':id');
-        // routeListItem = routeListItem.replace(id, ':id');
     });
 });
 

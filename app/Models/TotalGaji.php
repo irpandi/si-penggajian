@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Karyawan extends Model
+class TotalGaji extends Model
 {
     use HasFactory, CreatedUpdatedBy, SoftDeletes;
 
-    protected $table   = 'tbl_karyawan';
+    protected $table   = 'tbl_total_gaji';
     protected $guarded = ['id'];
 }

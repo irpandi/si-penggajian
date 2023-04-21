@@ -12,7 +12,7 @@
                         <div class="card-title">{{ $data['title'] }}</div>
 
                         <div class="card-tools">
-                            <a href="#" class="btn btn-sm btn-primary">
+                            <a href="{{ route('penggajian.create') }}" class="btn btn-sm btn-primary">
                                 <i class="fa fa-plus-circle"></i> 
                                 Tambah
                             </a>
@@ -31,8 +31,7 @@
                                 </tr>
                             </thead>
 
-                            <tbody>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -42,5 +41,8 @@
 @endsection
 
 @section('script')
-<script type="text/javascript" src="{{ asset('assets/js/penggajian.js') }}"></script>
+<script type="text/javascript">
+    var routeList = "{{ route('penggajian.list') }}";
+</script>
+<script type="text/javascript" src="{{ asset('assets/js/penggajian.js?nocache='.time()) }}"></script>
 @endsection

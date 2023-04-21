@@ -65,7 +65,14 @@ Route::middleware('login')->group(function () {
     });
 
     Route::controller(PenggajianController::class)->group(function () {
-        Route::get('/penggajian', 'index');
+        Route::prefix('penggajian')->group(function () {
+            Route::name('penggajian.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/list', 'dataTables')->name('list');
+                Route::get('/create', 'create')->name('create');
+                Route::get('/optPenggajian', 'preparePagePenggajian')->name('optPenggajian');
+            });
+        });
     });
 
     Route::controller(BarangController::class)->group(function () {
