@@ -71,12 +71,14 @@ Route::middleware('login')->group(function () {
     Route::controller(BarangController::class)->group(function () {
         Route::prefix('barang')->group(function () {
             Route::name('barang.')->group(function () {
-                Route::get('/', 'index');
+                Route::get('/', 'index')->name('index');
                 Route::get('/create', 'create')->name('create');
+                Route::get('/{id}/edit', 'edit')->name('edit');
                 Route::get('/list', 'dataTables')->name('list');
                 Route::post('/', 'store')->name('store');
                 Route::get('/{id}', 'show')->name('show');
                 Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}/destroyItem', 'destroyItem')->name('destroy.item');
             });
         });
     });
