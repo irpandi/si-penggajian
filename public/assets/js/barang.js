@@ -35,7 +35,29 @@ $(function () {
         $('#formTemplate').attr('method', '');
         $('#method').val('');
 
+        // routeListItem = routeListItem.replace(':id', id);
+
+        // * Setup table for show item
+        $('#tableItem').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            destroy: true,
+            ajax: {
+                url: routeShow,
+                data: {
+                    dataTables: true
+                }
+            },
+            columns: [
+                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'nama', name: 'nama' },
+                { data: 'harga', name: 'harga' },
+            ]
+        });
+
         routeShow = routeShow.replace(id, ':id');
+        // routeListItem = routeListItem.replace(id, ':id');
     });
 });
 

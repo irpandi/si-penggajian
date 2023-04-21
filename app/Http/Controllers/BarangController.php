@@ -7,6 +7,7 @@ use App\Models\Barang;
 use App\Models\Item;
 use App\Models\SubItem;
 use DataTables;
+use Illuminate\Http\Request;
 
 class BarangController extends Controller
 {
@@ -89,9 +90,17 @@ class BarangController extends Controller
     }
 
     // * Method for view data barang
-    public function show($id)
+    public function show(Request $req, $id)
     {
         $data = Barang::find($id);
+
+        if ($req->dataTables) {
+            $item = $data->item;
+
+            return DataTables::of($item)
+                ->addIndexColumn()
+                ->make(true);
+        }
 
         return response()->json($data);
     }

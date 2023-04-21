@@ -6,7 +6,7 @@
 @section('modal')
     {{-- Modal Template --}}
     <div class="modal fade modalTemplate">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="titleModal"></h4>
@@ -41,6 +41,18 @@
                             </div>
                         </div>
                     </form>
+
+                    <table id="tableItem" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Harga</th>
+                            </tr>
+                        </thead>
+
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
