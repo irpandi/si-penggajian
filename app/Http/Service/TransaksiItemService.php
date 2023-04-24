@@ -5,6 +5,7 @@
 namespace App\Http\Service;
 
 use App\Models\Item;
+use App\Models\SubItem;
 use App\Models\TransaksiItem;
 
 class TransaksiItemService
@@ -18,7 +19,7 @@ class TransaksiItemService
     public static $msgValidItem              = 'valid_total_pengerjaan_item';
     public static $msgStore                  = 'store';
 
-    // * Manage store to database for penggajian
+    // * Manage store to database for add penggajian
     public static function storePenggajian($data)
     {
         $tglPeriode          = $data['tglPeriode'];
@@ -34,10 +35,6 @@ class TransaksiItemService
         }
 
         $item = Item::findOrFail($item);
-        Item::where('id', $item->id)
-            ->update([
-                'total_tmp_barang' => $item->total_tmp_barang - $totalPengerjaanItem,
-            ]);
 
         $createSubItem = SubItem::create([
             'periode_id'            => $tglPeriode,
@@ -49,6 +46,17 @@ class TransaksiItemService
             'itemId'    => $item->id,
             'subItemId' => $createSubItem->id,
         ];
+        $dataTrx['beforeTmp'] = $item->total_tmp_barang;
+
+        $penguranganItem = $item->total_tmp_barang - $totalPengerjaanItem;
+        Item::where('id', $item->id)
+            ->update([
+                'total_tmp_barang' => $penguranganItem,
+            ]);
+        $dataAfterItem = Item::findOrFail($item->id);
+
+        $dataTrx['afterTmp']   = $dataAfterItem->total_tmp_barang;
+        $dataTrx['selisihTmp'] = $totalPengerjaanItem;
 
         self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemTambah);
         self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
@@ -59,13 +67,19 @@ class TransaksiItemService
     // * Manage transaksi penggajian
     private static function transaksiPenggajian($data, $msg)
     {
-        $itemId    = $data['itemId'];
-        $subItemId = $data['subItemId'];
+        $itemId     = $data['itemId'];
+        $subItemId  = $data['subItemId'];
+        $beforeTmp  = $data['beforeTmp'];
+        $afterTmp   = $data['afterTmp'];
+        $selisihTmp = $data['selisihTmp'];
 
         $createTransaksi = [
-            'item_id'     => $itemId,
-            'sub_item_id' => $subItemId,
-            'keterangan'  => self::$msgAnomali,
+            'item_id'                  => $itemId,
+            'sub_item_id'              => $subItemId,
+            'keterangan'               => self::$msgAnomali,
+            'before_total_tmp_barang'  => $beforeTmp,
+            'after_total_tmp_barang'   => $afterTmp,
+            'selisih_total_tmp_barang' => $selisihTmp,
         ];
 
         if ($msg == self::$msgTransaksiItemTambah) {
