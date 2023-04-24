@@ -1,7 +1,11 @@
 <?php
 
+// * Author By : Rifki Irpandi
+
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PenggajianRequest;
+use App\Http\Service\TransaksiItemService;
 use App\Models\Barang;
 use App\Models\Item;
 use App\Models\Karyawan;
@@ -83,6 +87,7 @@ class PenggajianController extends Controller
                 'id',
                 'nama'
             )
+                ->where('status', 1)
                 ->get();
         } else if ($req->type == 'barang') {
             $data = Barang::select(
@@ -101,5 +106,39 @@ class PenggajianController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    // * Method for add data pernggajian
+    public function store(PenggajianRequest $req)
+    {
+        $tglPeriode          = $req->tglPeriode;
+        $karyawan            = $req->karyawan;
+        $barang              = $req->barang;
+        $item                = $req->item;
+        $totalPengerjaanItem = $req->totalPengerjaanItem;
+
+        $dataReq = array(
+            'tglPeriode'          => $tglPeriode,
+            'karyawan'            => $karyawan,
+            'barang'              => $barang,
+            'item'                => $item,
+            'totalPengerjaanItem' => $totalPengerjaanItem,
+        );
+
+        $result = TransaksiItemService::storePenggajian($dataReq);
+
+        if ($result == TransaksiItemService::$msgPengerjaanItem) {
+            return back()->with([
+                'message' => 'Item pengerjaan pada data item telah habis',
+                'icon'    => 'warning',
+                'title'   => 'Warning',
+            ]);
+        }
+
+        return redirect()->route('penggajian.index')->with([
+            'message' => 'Tambah data penggajian berhasil',
+            'icon'    => 'success',
+            'title'   => 'Sukses',
+        ]);
     }
 }

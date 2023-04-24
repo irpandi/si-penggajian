@@ -22,7 +22,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                    <form action="{{ route('penggajian.store') }}" method="post">
                         @csrf
                         <div class="card card-outline card-primary">
                             <div class="card-header">
@@ -92,4 +92,9 @@
     var routeOptPenggajian = "{{ route('penggajian.optPenggajian') }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/createPenggajian.js?nocache='.time()) }}"></script>
+@if(session('message'))
+<script type="text/javascript">
+    customSweetAlert("{{ session('icon') }}", "{{ session('title') }}", "{{ session('message') }}");
+</script>
+@endif
 @endsection

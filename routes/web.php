@@ -71,6 +71,7 @@ Route::middleware('login')->group(function () {
                 Route::get('/list', 'dataTables')->name('list');
                 Route::get('/create', 'create')->name('create');
                 Route::get('/optPenggajian', 'preparePagePenggajian')->name('optPenggajian');
+                Route::post('/', 'store')->name('store');
             });
         });
     });

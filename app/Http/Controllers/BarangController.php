@@ -1,5 +1,7 @@
 <?php
 
+// * Author By : Rifki Irpandi
+
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BarangRequest;
