@@ -68,11 +68,14 @@ $(function () {
                 $.ajax({
                     url: routeDestroyItem,
                     type: 'DELETE',
+                    contentType: 'application/json',
                     success: function (res) {
                         funcThis.closest('#inputFormItem').remove();
                         Swal.fire(res.message, '', res.iconStatus);
                     }, err: function (err) {
                         console.log(err);
+                    }, complete: function (http, status) {
+                        Swal.fire(http.responseJSON.message, '', http.responseJSON.iconStatus);
                     }
                 });
 

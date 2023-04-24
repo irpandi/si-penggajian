@@ -125,23 +125,28 @@ class BarangController extends Controller
             'total' => $total,
         );
 
+        $barangUpdate = Barang::findOrFail($id);
+
         // * Untuk pengecekan total pengeluaran item yang dipakai oleh tbl_sub_item
-        $valid = $this->validationEditBarang('edit_total_barang', $id);
-        if (!$valid) {
-            return back()->with([
-                'message' => 'Edit Barang Gagal',
-                'icon'    => 'warning',
-                'title'   => 'Gagal',
+        if ($total != $barangUpdate->total) {
+            $valid = $this->validationEditBarang('edit_total_barang', $id);
+            if (!$valid) {
+                return back()->with([
+                    'message' => 'Edit Data Barang Gagal',
+                    'icon'    => 'warning',
+                    'title'   => 'Gagal',
+                ]);
+            }
+        }
+
+        if ($total != $barangUpdate->total) {
+            // * Update total_tmp_barang di tbl_item, jika total barang tidak sama dengan request total yg dikirim
+            $barangUpdate->item()->update([
+                'total_tmp_barang' => $total,
             ]);
         }
 
-        $barangUpdate = Barang::findOrFail($id);
         $barangUpdate->update($update);
-
-        // * Update total_tmp_barang di tbl_item, jika total barang tidak sama dengan request total yg dikirim
-        $barangUpdate->item()->update([
-            'total_tmp_barang' => $total,
-        ]);
 
         // * Condition for update item
         if ($itemId && count($itemId) > 0) {

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('karyawan_id')->nullable();
             $table->unsignedBigInteger('sub_item_id')->nullable();
-            $table->unsignedBigInteger('tunjangan_id')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
@@ -33,12 +32,6 @@ return new class extends Migration
             $table->foreign('sub_item_id')
                 ->references('id')
                 ->on('tbl_sub_item')
-                ->onUpdate('NO ACTION')
-                ->onDelete('NO ACTION');
-
-            $table->foreign('tunjangan_id')
-                ->references('id')
-                ->on('tbl_tunjangan')
                 ->onUpdate('NO ACTION')
                 ->onDelete('NO ACTION');
         });

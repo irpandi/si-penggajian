@@ -133,6 +133,12 @@ class PenggajianController extends Controller
                 'icon'    => 'warning',
                 'title'   => 'Warning',
             ]);
+        } else if ($result == TransaksiItemService::$msgTmpBarangNol) {
+            return back()->with([
+                'message' => 'Item ini sudah habis',
+                'icon'    => 'warning',
+                'title'   => 'warning',
+            ]);
         }
 
         return redirect()->route('penggajian.index')->with([

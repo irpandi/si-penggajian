@@ -16,12 +16,19 @@ return new class extends Migration
         Schema::create('tbl_tunjangan', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->nullable();
+            $table->unsignedBigInteger('data_gaji_id')->nullable();
             $table->bigInteger('jumlah')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('deleted_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('data_gaji_id')
+                ->references('id')
+                ->on('tbl_data_gaji')
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
         });
     }
 
