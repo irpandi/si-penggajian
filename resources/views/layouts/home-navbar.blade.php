@@ -52,15 +52,15 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/penggajian') }}" class="nav-link">
-                        <i class="nav-icon fa fa-table"></i>
-                        <p>Data Penggajian</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ url('/barang') }}" class="nav-link">
                         <i class="nav-icon fa fa-table"></i>
                         <p>Data Barang</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('/penggajian') }}" class="nav-link">
+                        <i class="nav-icon fa fa-table"></i>
+                        <p>Data Penggajian</p>
                     </a>
                 </li>
             </ul>

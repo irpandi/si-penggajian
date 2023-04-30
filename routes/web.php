@@ -64,18 +64,6 @@ Route::middleware('login')->group(function () {
         });
     });
 
-    Route::controller(PenggajianController::class)->group(function () {
-        Route::prefix('penggajian')->group(function () {
-            Route::name('penggajian.')->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/list', 'dataTables')->name('list');
-                Route::get('/create', 'create')->name('create');
-                Route::get('/optPenggajian', 'preparePagePenggajian')->name('optPenggajian');
-                Route::post('/', 'store')->name('store');
-            });
-        });
-    });
-
     Route::controller(BarangController::class)->group(function () {
         Route::prefix('barang')->group(function () {
             Route::name('barang.')->group(function () {
@@ -87,6 +75,20 @@ Route::middleware('login')->group(function () {
                 Route::get('/{id}', 'show')->name('show');
                 Route::put('/{id}', 'update')->name('update');
                 Route::delete('/{id}/destroyItem', 'destroyItem')->name('destroy.item');
+            });
+        });
+    });
+
+    Route::controller(PenggajianController::class)->group(function () {
+        Route::prefix('penggajian')->group(function () {
+            Route::name('penggajian.')->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/list', 'dataTables')->name('list');
+                Route::get('/{karyawanId}/{periodeId}', 'show')->name('show');
+                Route::get('/create', 'create')->name('create');
+                Route::get('/optPenggajian', 'preparePagePenggajian')->name('optPenggajian');
+                Route::post('/', 'store')->name('store');
+                Route::get('/listGaji', 'dataTablesGaji')->name('listGaji');
             });
         });
     });

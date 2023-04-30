@@ -12,4 +12,14 @@ class DataGaji extends Model
 
     protected $table   = 'tbl_data_gaji';
     protected $guarded = ['id'];
+
+    public function tunjangan()
+    {
+        return $this->hasMany(Tunjangan::class, 'data_gaji_id', 'id');
+    }
+
+    public function subItem()
+    {
+        return $this->hasOne(SubItem::class, 'id', 'sub_item_id');
+    }
 }

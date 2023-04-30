@@ -7,6 +7,7 @@ namespace App\Http\Service;
 use App\Models\DataGaji;
 use App\Models\Item;
 use App\Models\SubItem;
+use App\Models\TotalGaji;
 use App\Models\TransaksiItem;
 
 class TransaksiItemService
@@ -72,6 +73,9 @@ class TransaksiItemService
             'karyawan_id' => $karyawan,
             'sub_item_id' => $createSubItem->id,
         ]);
+
+        // * Hitung total gaji
+        self::manageTotalGaji($tglPeriode, $karyawan);
 
         return self::$msgStore;
     }

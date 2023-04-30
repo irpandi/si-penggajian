@@ -5,11 +5,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PenggajianRequest;
+use App\Http\Service\General;
 use App\Http\Service\TransaksiItemService;
 use App\Models\Barang;
 use App\Models\Item;
 use App\Models\Karyawan;
 use App\Models\Periode;
+use App\Models\SubItem;
 use App\Models\TotalGaji;
 use DataTables;
 use Illuminate\Http\Request;
@@ -31,6 +33,7 @@ class PenggajianController extends Controller
     {
         $data = TotalGaji::select(
             'tbl_karyawan.id',
+            'tbl_periode.id as periode_id',
             'tbl_periode.tgl_periode',
             'tbl_karyawan.nama',
             'tbl_total_gaji.total'
@@ -43,7 +46,7 @@ class PenggajianController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '
-                    <a href="#" class="btn btn-sm btn-info">Lihat</a>
+                    <a href="/penggajian/' . $row->id . '/' . $row->periode_id . '" class="btn btn-sm btn-info">Lihat</a>
                 ';
 
                 return $btn;
@@ -52,6 +55,11 @@ class PenggajianController extends Controller
                 $newDate = General::manageDate('Y-m-d', $row->tgl_periode, 'd/m/Y');
 
                 return $newDate;
+            })
+            ->editColumn('total', function ($row) {
+                $numberFormat = number_format($row->total, 0, ",", ".");
+
+                return $numberFormat;
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -146,5 +154,78 @@ class PenggajianController extends Controller
             'icon'    => 'success',
             'title'   => 'Sukses',
         ]);
+    }
+
+    // * Method for show page data penggajian karyawan
+    public function show($karyawanId, $periodeId)
+    {
+        $karyawan = Karyawan::where('id', $karyawanId)
+            ->with('totalGaji', function ($q) use ($periodeId) {
+                $q->where('periode_id', $periodeId);
+            })
+            ->first();
+
+        $periode = Periode::findOrfail($periodeId);
+
+        $data = array(
+            'title'       => 'Lihat Data Penggajian',
+            'breadcrumbs' => '
+                <li class="breadcrumb-item"><a href="/penggajian">Data Penggajian</a></li>
+                <li class="breadcrumb-item active">Lihat Data</li>
+            ',
+            'karyawan'    => $karyawan,
+            'periode'     => $periode,
+        );
+
+        return view('penggajian.show', compact('data'));
+    }
+
+    // * Method for show data gaji in page lihat data penggajian
+    public function dataTablesGaji(Request $req)
+    {
+        $periodeId  = $req->periodeId;
+        $karyawanId = $req->karyawanId;
+
+        $data = SubItem::select(
+            'tbl_sub_item.id',
+            'tbl_item.nama as nama_item',
+            'tbl_barang.nama as nama_barang',
+            'tbl_item.harga as harga_item',
+            'tbl_sub_item.total_pengerjaan_item',
+            'tbl_barang.merk as merk_barang'
+        )
+            ->join('tbl_item', 'tbl_item.id', '=', 'tbl_sub_item.item_id')
+            ->join('tbl_barang', 'tbl_barang.id', '=', 'tbl_item.barang_id')
+            ->join('tbl_data_gaji', 'tbl_data_gaji.sub_item_id', '=', 'tbl_sub_item.id')
+            ->where([
+                ['tbl_sub_item.periode_id', '=', $periodeId],
+                ['tbl_data_gaji.karyawan_id', '=', $karyawanId],
+            ])
+            ->get();
+
+        return DataTables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function ($row) {
+                $btn = '
+                    <div class="btn-group">
+                        <a href="#" class="btn btn-sm btn-success">Edit</a>
+                        <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                    </div>
+                ';
+
+                return $btn;
+            })
+            ->editColumn('harga_item', function ($row) {
+                $harga = 'Rp. ' . number_format($row->harga_item, 0, ',', '.');
+
+                return $harga;
+            })
+            ->editColumn('nama_barang', function ($row) {
+                $nama = $row->merk_barang . ' | ' . $row->nama_barang;
+
+                return $nama;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }
