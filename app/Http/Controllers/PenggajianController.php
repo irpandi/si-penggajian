@@ -194,7 +194,7 @@ class PenggajianController extends Controller
             'tbl_item.harga as harga_item',
             'tbl_sub_item.total_pengerjaan_item',
             'tbl_barang.merk as merk_barang',
-            'tbl_data_gaji as data_gaji_id'
+            'tbl_data_gaji.id as data_gaji_id'
         )
             ->join('tbl_item', 'tbl_item.id', '=', 'tbl_sub_item.item_id')
             ->join('tbl_barang', 'tbl_barang.id', '=', 'tbl_item.barang_id')
