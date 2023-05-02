@@ -84,11 +84,12 @@ Route::middleware('login')->group(function () {
             Route::name('penggajian.')->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/list', 'dataTables')->name('list');
+                Route::get('/listGaji', 'dataTablesGaji')->name('listGaji');
+                Route::get('/optPenggajian', 'preparePagePenggajian')->name('optPenggajian');
+                Route::get('/edit/{id}', 'edit')->name('edit');
                 Route::get('/{karyawanId}/{periodeId}', 'show')->name('show');
                 Route::get('/create', 'create')->name('create');
-                Route::get('/optPenggajian', 'preparePagePenggajian')->name('optPenggajian');
                 Route::post('/', 'store')->name('store');
-                Route::get('/listGaji', 'dataTablesGaji')->name('listGaji');
             });
         });
     });

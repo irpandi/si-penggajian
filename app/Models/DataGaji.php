@@ -22,4 +22,9 @@ class DataGaji extends Model
     {
         return $this->hasOne(SubItem::class, 'id', 'sub_item_id');
     }
+
+    public function karyawan()
+    {
+        return $this->hasOne(Karyawan::class, 'id', 'karyawan_id');
+    }
 }

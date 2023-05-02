@@ -16,7 +16,7 @@ class Item extends Model
 
     public function barang()
     {
-        return $this->hasOne(Barang::class, 'barang_id', 'id');
+        return $this->hasOne(Barang::class, 'id', 'barang_id');
     }
 
     public function subItem()

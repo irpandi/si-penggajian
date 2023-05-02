@@ -8,6 +8,7 @@ use App\Http\Requests\PenggajianRequest;
 use App\Http\Service\General;
 use App\Http\Service\TransaksiItemService;
 use App\Models\Barang;
+use App\Models\DataGaji;
 use App\Models\Item;
 use App\Models\Karyawan;
 use App\Models\Periode;
@@ -46,7 +47,7 @@ class PenggajianController extends Controller
             ->addIndexColumn()
             ->addColumn('action', function ($row) {
                 $btn = '
-                    <a href="/penggajian/' . $row->id . '/' . $row->periode_id . '" class="btn btn-sm btn-info">Lihat</a>
+                    <a href="' . route('penggajian.show', ['karyawanId' => $row->id, 'periodeId' => $row->periode_id]) . '" class="btn btn-sm btn-info">Lihat</a>
                 ';
 
                 return $btn;
@@ -192,7 +193,8 @@ class PenggajianController extends Controller
             'tbl_barang.nama as nama_barang',
             'tbl_item.harga as harga_item',
             'tbl_sub_item.total_pengerjaan_item',
-            'tbl_barang.merk as merk_barang'
+            'tbl_barang.merk as merk_barang',
+            'tbl_data_gaji as data_gaji_id'
         )
             ->join('tbl_item', 'tbl_item.id', '=', 'tbl_sub_item.item_id')
             ->join('tbl_barang', 'tbl_barang.id', '=', 'tbl_item.barang_id')
@@ -208,7 +210,7 @@ class PenggajianController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '
                     <div class="btn-group">
-                        <a href="#" class="btn btn-sm btn-success">Edit</a>
+                        <a href="' . route('penggajian.edit', $row->data_gaji_id) . '" class="btn btn-sm btn-success">Edit</a>
                         <button type="button" class="btn btn-sm btn-danger">Hapus</button>
                     </div>
                 ';
@@ -227,5 +229,31 @@ class PenggajianController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    // * Method for show page edit data penggajian
+    public function edit($id)
+    {
+        $dataGaji = DataGaji::where('id', $id)
+            ->with([
+                'subItem',
+                'subItem.periode',
+                'subItem.item',
+                'subItem.item.barang',
+                'karyawan',
+            ])
+            ->first();
+
+        $data = array(
+            'title'       => 'Edit Data',
+            'breadcrumbs' => '
+                <li class="breadcrumb-item"><a href="' . route('penggajian.index') . '">Data Penggajian</a></li>
+                <li class="breadcrumb-item"><a href="' . route('penggajian.show', ['karyawanId' => $dataGaji->karyawan_id, 'periodeId' => $dataGaji->subItem->periode_id]) . '">Lihat Data Penggajian</a></li>
+                <li class="breadcrumb-item active">Edit Data</li>
+            ',
+            'dataGaji'    => $dataGaji,
+        );
+
+        return view('penggajian.edit', compact('data'));
     }
 }

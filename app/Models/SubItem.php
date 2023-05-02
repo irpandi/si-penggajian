@@ -13,4 +13,14 @@ class SubItem extends Model
 
     protected $table   = 'tbl_sub_item';
     protected $guarded = ['id'];
+
+    public function periode()
+    {
+        return $this->hasOne(Periode::class, 'id', 'periode_id');
+    }
+
+    public function item()
+    {
+        return $this->hasOne(Item::class, 'id', 'item_id');
+    }
 }
