@@ -5,6 +5,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\BarangRequest;
+use App\Http\Service\General;
 use App\Models\Barang;
 use App\Models\Item;
 use App\Models\SubItem;
@@ -102,7 +103,7 @@ class BarangController extends Controller
             return DataTables::of($item)
                 ->addIndexColumn()
                 ->editColumn('harga', function ($row) {
-                    $harga = 'Rp. ' . number_format($row->harga, 0, ',', '.');
+                    $harga = General::formaterNumber($row->harga, 0);
 
                     return $harga;
                 })

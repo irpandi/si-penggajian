@@ -18,4 +18,10 @@ class General
             return $data;
         }
     }
+
+    // * For formatter numbering
+    public static function formaterNumber($angka, $berapaNol)
+    {
+        return 'Rp. ' . number_format($angka, $berapaNol, ',', '.');
+    }
 }

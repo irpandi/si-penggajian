@@ -58,7 +58,7 @@ class PenggajianController extends Controller
                 return $newDate;
             })
             ->editColumn('total', function ($row) {
-                $numberFormat = number_format($row->total, 0, ",", ".");
+                $numberFormat = General::formaterNumber($row->total, 0);
 
                 return $numberFormat;
             })
@@ -211,14 +211,14 @@ class PenggajianController extends Controller
                 $btn = '
                     <div class="btn-group">
                         <a href="' . route('penggajian.edit', $row->data_gaji_id) . '" class="btn btn-sm btn-success">Edit</a>
-                        <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
                     </div>
                 ';
 
                 return $btn;
             })
             ->editColumn('harga_item', function ($row) {
-                $harga = 'Rp. ' . number_format($row->harga_item, 0, ',', '.');
+                $harga = General::formaterNumber($row->harga_item, 0);
 
                 return $harga;
             })

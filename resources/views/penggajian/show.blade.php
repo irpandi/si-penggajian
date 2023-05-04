@@ -3,6 +3,10 @@
     'breadcrumbs' => $data['breadcrumbs']
 ])
 
+@php
+    use App\Http\Service\General;
+@endphp
+
 @section('modal')
     {{-- Modal Template Tunjangan --}}
     <div class="modal fade modalTemplateTunjangan">
@@ -76,7 +80,7 @@
                                 <tr>
                                     <td>Tempat, Tanggal Lahir</td>
                                     <td>:</td>
-                                    <td>{{ $data['karyawan']->tempat_lahir }}, {{ App\Http\Service\General::manageDate('Y-m-d', $data['karyawan']->tgl_lahir, 'd/m/Y') }}</td>
+                                    <td>{{ $data['karyawan']->tempat_lahir }}, {{ General::manageDate('Y-m-d', $data['karyawan']->tgl_lahir, 'd/m/Y') }}</td>
                                 </tr>
 
                                 <tr>
@@ -94,13 +98,13 @@
                                 <tr>
                                     <td>Periode</td>
                                     <td>:</td>
-                                    <td>{{ App\Http\Service\General::manageDate('Y-m-d', $data['periode']->tgl_periode, 'd/m/Y') }}</td>
+                                    <td>{{ General::manageDate('Y-m-d', $data['periode']->tgl_periode, 'd/m/Y') }}</td>
                                 </tr>
 
                                 <tr>
                                     <td>Total Gaji</td>
                                     <td>:</td>
-                                    <td>{{ number_format($data['karyawan']->totalGaji->total, 0, ',', '.') }}</td>
+                                    <td>{{ General::formaterNumber($data['karyawan']->totalGaji->total, 0) }}</td>
                                 </tr>
                             </table>
                         </div>
