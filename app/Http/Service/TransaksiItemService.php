@@ -171,33 +171,41 @@ class TransaksiItemService
         $item                = $data['item'];
         $totalPengerjaanItem = $data['totalPengerjaanItem'];
 
+        // * Data before
+        $item    = Item::findOrFail($item);
+        $subItem = SubItem::findOrFail($subItemId);
+
+        $beforeTotalPengerjaanItem = $subItem->total_pengerjaan_item;
+        $tmpBarang                 = $item->total_tmp_barang;
+
+        if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
+            $cekInputTotalPengerjaanItem = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
+        } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
+            $cekInputTotalPengerjaanItem = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
+        } else {
+            $cekInputTotalPengerjaanItem = $totalPengerjaanItem;
+        }
+
         // * Validation custom for item
-        $validItem = self::validationItem($item, $totalPengerjaanItem);
+        $validItem = self::validationItem($item->id, $cekInputTotalPengerjaanItem);
         if ($validItem == self::$msgPengerjaanItem) {
             return self::$msgPengerjaanItem;
         } else if ($validItem == self::$msgTmpBarangNol) {
             return self::$msgTmpBarangNol;
         }
 
-        // * Data before
-        $item    = Item::findOrFail($item);
-        $subItem = SubItem::findOrFail($subItemId);
-
         $dataTrx = [
             'itemId'    => $item->id,
             'subItemId' => $subItem->id,
         ];
 
-        $beforeTotalPengerjaanItem = $subItem->total_pengerjaan_item;
-        $tmpBarang                 = $item->total_tmp_barang;
-
-        if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
+        if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) { // * subitem berkurang, item bertambah
             $selisihTmpBarang = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
             $totalTmpBarang   = $tmpBarang - $selisihTmpBarang;
-        } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
+        } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) { // * item berkurang, subitem bertambah
             $selisihTmpBarang = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
             $totalTmpBarang   = $tmpBarang + $selisihTmpBarang;
-        } else {
+        } else { // * Tetep sama
             $selisihTmpBarang = $beforeTotalPengerjaanItem;
             $totalTmpBarang   = $tmpBarang;
         }
@@ -211,6 +219,21 @@ class TransaksiItemService
             ->update([
                 'total_pengerjaan_item' => $totalPengerjaanItem,
             ]);
+
+        $dataTrx['beforeTmp'] = $item->total_tmp_barang;
+
+        // * Data after
+        $item = Item::findOrFail($item->id);
+
+        $dataTrx['afterTmp']   = $item->total_tmp_barang;
+        $dataTrx['selisihTmp'] = $selisihTmpBarang;
+
+        // * Log to transaksi item
+        if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
+            self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemTambah);
+        } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
+            self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
+        }
 
         return self::$msgUpdate;
     }

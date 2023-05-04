@@ -291,7 +291,7 @@ class PenggajianController extends Controller
             ]);
         }
 
-        return back()->with([
+        return redirect()->route('penggajian.show', ['karyawanId' => $karyawan, 'periodeId' => $tglPeriode])->with([
             'message' => 'Edit data penggajian berhasil',
             'icon'    => 'success',
             'title'   => 'Sukses',

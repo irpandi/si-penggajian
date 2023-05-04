@@ -179,4 +179,9 @@
         karyawanId = $('#karyawanId').val();
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/showPenggajian.js?nocache='.time()) }}"></script>
+@if(session('message'))
+<script type="text/javascript">
+    customSweetAlert("{{ session('icon') }}", "{{ session('title') }}", "{{ session('message') }}");
+</script>
+@endif
 @endsection
