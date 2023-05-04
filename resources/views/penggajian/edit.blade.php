@@ -34,6 +34,7 @@
                         <input type="hidden" name="tglPeriode" value="{{ $data['dataGaji']->subItem->periode_id }}">
                         <input type="hidden" name="karyawan" value="{{ $data['dataGaji']->karyawan_id }}">
                         <input type="hidden" name="barang" value="{{ $data['dataGaji']->subItem->item->barang_id }}">
+                        <input type="hidden" name="item" value="{{ $data['dataGaji']->subItem->item->id }}">
 
                         <div class="card card-outline card-success">
                             <div class="card-header">
@@ -71,7 +72,7 @@
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <select class="form-control" id="item" name="item" required>
+                                    <select class="form-control" id="item" required disabled>
                                         <option></option>
                                     </select>
                                     <div class="input-group-text">
