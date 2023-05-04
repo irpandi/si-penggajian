@@ -27,9 +27,14 @@
             <input type="hidden" id="dataItem" value="{{ $data['dataGaji']->subItem->item }}">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="" method="post">
+                    <form action="{{ route('penggajian.update', $data['dataGaji']->sub_item_id) }}" method="post">
                         @csrf
                         @method('put')
+
+                        <input type="hidden" name="tglPeriode" value="{{ $data['dataGaji']->subItem->periode_id }}">
+                        <input type="hidden" name="karyawan" value="{{ $data['dataGaji']->karyawan_id }}">
+                        <input type="hidden" name="barang" value="{{ $data['dataGaji']->subItem->item->barang_id }}">
+
                         <div class="card card-outline card-success">
                             <div class="card-header">
                                 <div class="card-title">
@@ -39,7 +44,7 @@
 
                             <div class="card-body">
                                 <div class="input-group mb-3">
-                                    <select class="form-control" id="tglPeriode" name="tglPeriode" required>
+                                    <select class="form-control" id="tglPeriode" required disabled>
                                         <option></option>
                                     </select>
                                     <div class="input-group-text">
@@ -48,7 +53,7 @@
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <select class="form-control" id="karyawan" name="karyawan" required>
+                                    <select class="form-control" id="karyawan" required disabled>
                                         <option></option>
                                     </select>
                                     <div class="input-group-text">
@@ -57,7 +62,7 @@
                                 </div>
 
                                 <div class="input-group mb-3">
-                                    <select class="form-control" id="barang" name="barang" required>
+                                    <select class="form-control" id="barang" required disabled>
                                         <option></option>
                                     </select>
                                     <div class="input-group-text">
@@ -83,7 +88,7 @@
                             </div>
 
                             <div class="card-footer text-right">
-                                <button type="submit" class="btn btn-sm btn-primary">Simpan</button>
+                                <button type="submit" class="btn btn-sm btn-success">Simpan</button>
                             </div>
                         </div>
                     </form>

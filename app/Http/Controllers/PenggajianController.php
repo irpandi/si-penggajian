@@ -256,4 +256,45 @@ class PenggajianController extends Controller
 
         return view('penggajian.edit', compact('data'));
     }
+
+    // * Method for update data penggajian
+    public function update(PenggajianRequest $req, $id)
+    {
+        $tglPeriode          = $req->tglPeriode;
+        $karyawan            = $req->karyawan;
+        $barang              = $req->barang;
+        $item                = $req->item;
+        $totalPengerjaanItem = $req->totalPengerjaanItem;
+
+        $dataReq = array(
+            'subItemId'           => $id,
+            'tglPeriode'          => $tglPeriode,
+            'karyawan'            => $karyawan,
+            'barang'              => $barang,
+            'item'                => $item,
+            'totalPengerjaanItem' => $totalPengerjaanItem,
+        );
+
+        $result = TransaksiItemService::updatePenggajian($dataReq);
+
+        if ($result == TransaksiItemService::$msgPengerjaanItem) {
+            return back()->with([
+                'message' => 'Item pengerjaan pada data item telah habis',
+                'icon'    => 'warning',
+                'title'   => 'Warning',
+            ]);
+        } else if ($result == TransaksiItemService::$msgTmpBarangNol) {
+            return back()->with([
+                'message' => 'Item ini sudah habis',
+                'icon'    => 'warning',
+                'title'   => 'warning',
+            ]);
+        }
+
+        return back()->with([
+            'message' => 'Edit data penggajian berhasil',
+            'icon'    => 'success',
+            'title'   => 'Sukses',
+        ]);
+    }
 }

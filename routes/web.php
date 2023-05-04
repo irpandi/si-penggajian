@@ -90,6 +90,7 @@ Route::middleware('login')->group(function () {
                 Route::get('/{karyawanId}/{periodeId}', 'show')->name('show');
                 Route::get('/create', 'create')->name('create');
                 Route::post('/', 'store')->name('store');
+                Route::put('/{id}', 'update')->name('update');
             });
         });
     });

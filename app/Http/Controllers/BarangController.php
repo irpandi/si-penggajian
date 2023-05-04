@@ -40,7 +40,7 @@ class BarangController extends Controller
             ->addColumn('action', function ($row) {
                 $btn = '
                     <div class="btn-group">
-                        <a class="btn btn-sm btn-success" href="/barang/' . $row->id . '/edit">Edit</a>
+                        <a class="btn btn-sm btn-success" href="' . route('barang.edit', $row->id) . '">Edit</a>
                         <button type="button" class="btn btn-sm btn-info btnView" data-target=".modalTemplate" data-id="' . $row->id . '" data-toggle="modal">Lihat</button>
                     </div>
                 ';
@@ -101,6 +101,11 @@ class BarangController extends Controller
 
             return DataTables::of($item)
                 ->addIndexColumn()
+                ->editColumn('harga', function ($row) {
+                    $harga = 'Rp. ' . number_format($row->harga, 0, ',', '.');
+
+                    return $harga;
+                })
                 ->make(true);
         }
 

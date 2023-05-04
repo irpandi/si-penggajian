@@ -21,6 +21,7 @@ class TransaksiItemService
     public static $msgTmpBarangNol           = 'nol_tmp_barang';
     public static $msgValidItem              = 'valid_total_pengerjaan_item';
     public static $msgStore                  = 'store';
+    public static $msgUpdate                 = 'update';
 
     // * Manage store to database for add penggajian
     public static function storePenggajian($data)
@@ -158,5 +159,59 @@ class TransaksiItemService
                 'total' => $totalGaji,
             ]);
         }
+    }
+
+    // * Manage update to database for edit penggajian
+    public static function updatePenggajian($data)
+    {
+        $subItemId           = $data['subItemId'];
+        $tglPeriode          = $data['tglPeriode'];
+        $karyawan            = $data['karyawan'];
+        $barang              = $data['barang'];
+        $item                = $data['item'];
+        $totalPengerjaanItem = $data['totalPengerjaanItem'];
+
+        // * Validation custom for item
+        $validItem = self::validationItem($item, $totalPengerjaanItem);
+        if ($validItem == self::$msgPengerjaanItem) {
+            return self::$msgPengerjaanItem;
+        } else if ($validItem == self::$msgTmpBarangNol) {
+            return self::$msgTmpBarangNol;
+        }
+
+        // * Data before
+        $item    = Item::findOrFail($item);
+        $subItem = SubItem::findOrFail($subItemId);
+
+        $dataTrx = [
+            'itemId'    => $item->id,
+            'subItemId' => $subItem->id,
+        ];
+
+        $beforeTotalPengerjaanItem = $subItem->total_pengerjaan_item;
+        $tmpBarang                 = $item->total_tmp_barang;
+
+        if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
+            $selisihTmpBarang = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
+            $totalTmpBarang   = $tmpBarang - $selisihTmpBarang;
+        } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
+            $selisihTmpBarang = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
+            $totalTmpBarang   = $tmpBarang + $selisihTmpBarang;
+        } else {
+            $selisihTmpBarang = $beforeTotalPengerjaanItem;
+            $totalTmpBarang   = $tmpBarang;
+        }
+
+        Item::where('id', $item->id)
+            ->update([
+                'total_tmp_barang' => $totalTmpBarang,
+            ]);
+
+        SubItem::where('id', $subItem->id)
+            ->update([
+                'total_pengerjaan_item' => $totalPengerjaanItem,
+            ]);
+
+        return self::$msgUpdate;
     }
 }
