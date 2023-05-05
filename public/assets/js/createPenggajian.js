@@ -1,4 +1,33 @@
 $(function () {
+    $('#tglPeriode').select2({
+        theme: 'bootstrap4',
+        placeholder: 'Pilih Periode',
+        allowClear: true,
+        ajax: {
+            url: routeOptPenggajian,
+            dataType: 'json',
+            type: 'GET',
+            data: function (params) {
+                let query = {
+                    type: 'periode',
+                    q: params.term
+                }
+
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: changeToDMY(item.tgl_periode),
+                            id: item.id
+                        }
+                    })
+                }
+            }
+        }
+    });
+
     $('#karyawan').select2({
         theme: 'bootstrap4',
         placeholder: 'Pilih Karyawan',
@@ -39,6 +68,7 @@ $(function () {
             data: function (params) {
                 let query = {
                     type: 'barang',
+                    periodeId: $('#tglPeriode').val(),
                     q: params.term
                 }
 

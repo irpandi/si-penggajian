@@ -33,6 +33,15 @@
 
                             <div class="card-body">
                                 <div class="input-group mb-3">
+                                    <select class="form-control" id="tglPeriode" name="tglPeriode" required>
+                                        <option></option>
+                                    </select>
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
                                     <select class="form-control" id="karyawan" name="karyawan" required>
                                         <option></option>
                                     </select>
@@ -47,13 +56,6 @@
                                     </select>
                                     <div class="input-group-text">
                                         <i class="fa fa-cog"></i>
-                                    </div>
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <input type="text" id="tglPeriode" class="form-control" placeholder="Tanggal Periode" disabled>
-                                    <div class="input-group-text">
-                                        <i class="fa fa-calendar-alt"></i>
                                     </div>
                                 </div>
 

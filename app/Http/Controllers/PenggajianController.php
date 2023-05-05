@@ -105,15 +105,12 @@ class PenggajianController extends Controller
                     ['status', '=', 1],
                 ])
                 ->get();
-        } else if ($req->type == 'barang') {
-            $data = Barang::select(
-                'id',
-                'nama',
-                'merk'
-            )
-                ->where([
-                    ['nama', 'like', '%' . $q . '%'],
-                ])
+        } else if ($req->type == 'barang' && $req->periodeId != '') {
+            $data = Barang::where([
+                ['nama', 'like', '%' . $q . '%'],
+                ['periode_id', '=', $req->periodeId],
+            ])
+                ->with('periode')
                 ->get();
         } else if ($req->type == 'item' && $req->barangId != '') {
             $data = Item::select(
@@ -251,7 +248,6 @@ class PenggajianController extends Controller
         $dataGaji = DataGaji::where('id', $id)
             ->with([
                 'subItem',
-                'subItem.periode',
                 'subItem.item',
                 'subItem.item.barang',
                 'karyawan',

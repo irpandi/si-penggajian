@@ -10,12 +10,16 @@ $(function () {
 
 // * Function change date to DMY
 function changeToDMY(date) {
-    var dateData = new Date(date.split("/").reverse().join("-")),
-        dd = dateData.getDate(),
-        mm = dateData.getMonth() + 1,
-        yy = dateData.getFullYear();
+    if (date) {
+        var dateData = new Date(date.split("/").reverse().join("-")),
+            dd = dateData.getDate(),
+            mm = dateData.getMonth() + 1,
+            yy = dateData.getFullYear();
 
-    return dd + "/" + mm + "/" + yy;
+        return dd + "/" + mm + "/" + yy;
+    }
+
+    return null;
 }
 
 // * Function manage SweetAlert

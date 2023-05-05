@@ -21,7 +21,7 @@
             @endif
 
             <input type="hidden" id="dataGaji" value="{{ $data['dataGaji'] }}">
-            <input type="hidden" id="dataPeriode" value="{{ $data['dataGaji']->subItem->periode }}">
+            <input type="hidden" id="dataPeriode" value="{{ $data['dataGaji']->subItem->item->barang->periode }}">
             <input type="hidden" id="dataKaryawan" value="{{ $data['dataGaji']->karyawan }}">
             <input type="hidden" id="dataBarang" value="{{ $data['dataGaji']->subItem->item->barang }}">
             <input type="hidden" id="dataItem" value="{{ $data['dataGaji']->subItem->item }}">
@@ -31,7 +31,7 @@
                         @csrf
                         @method('put')
 
-                        <input type="hidden" name="tglPeriode" value="{{ $data['dataGaji']->subItem->periode_id }}">
+                        <input type="hidden" name="tglPeriode" value="{{ $data['dataGaji']->subItem->item->barang->periode_id }}">
                         <input type="hidden" name="karyawan" value="{{ $data['dataGaji']->karyawan_id }}">
                         <input type="hidden" name="barang" value="{{ $data['dataGaji']->subItem->item->barang_id }}">
                         <input type="hidden" name="item" value="{{ $data['dataGaji']->subItem->item->id }}">
