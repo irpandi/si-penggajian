@@ -78,15 +78,17 @@ class KaryawanController extends Controller
         $status       = $req->status;
         $noHp         = $req->noHp;
         $alamat       = $req->alamat;
+        $jenisKelamin = $req->jenisKelamin;
 
         $create = array(
-            'nik'          => $nik,
-            'nama'         => $nameKaryawan,
-            'tempat_lahir' => $tmptLahir,
-            'tgl_lahir'    => $tglLahir,
-            'status'       => $status,
-            'no_hp'        => $noHp,
-            'alamat'       => $alamat,
+            'nik'           => $nik,
+            'nama'          => $nameKaryawan,
+            'tempat_lahir'  => $tmptLahir,
+            'tgl_lahir'     => $tglLahir,
+            'status'        => $status,
+            'no_hp'         => $noHp,
+            'alamat'        => $alamat,
+            'jenis_kelamin' => $jenisKelamin,
         );
 
         Karyawan::create($create);
@@ -112,15 +114,17 @@ class KaryawanController extends Controller
         $status       = $req->status;
         $noHp         = $req->noHp;
         $alamat       = $req->alamat;
+        $jenisKelamin = $req->jenisKelamin;
 
         $update = array(
-            'nik'          => $nik,
-            'nama'         => $nameKaryawan,
-            'tempat_lahir' => $tmptLahir,
-            'tgl_lahir'    => $tglLahir,
-            'status'       => $status,
-            'no_hp'        => $noHp,
-            'alamat'       => $alamat,
+            'nik'           => $nik,
+            'nama'          => $nameKaryawan,
+            'tempat_lahir'  => $tmptLahir,
+            'tgl_lahir'     => $tglLahir,
+            'status'        => $status,
+            'no_hp'         => $noHp,
+            'alamat'        => $alamat,
+            'jenis_kelamin' => $jenisKelamin,
         );
 
         Karyawan::where('id', $id)

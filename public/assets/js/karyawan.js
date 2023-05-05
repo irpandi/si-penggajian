@@ -30,6 +30,7 @@ $(function () {
             "nama": null,
             "tempat_lahir": null,
             "tgl_lahir": null,
+            "jenis_kelamin": 'pria',
             "no_hp": null,
             "status": 1,
             "alamat": null,
@@ -116,6 +117,7 @@ function fillKaryawan(res) {
     $('#nameKaryawan').val(res.nama);
     $('#tmptLahir').val(res.tempat_lahir);
     $('#tglLahir').val(res.tgl_lahir);
+    $('#jenisKelamin').val(res.jenis_kelamin).trigger('change');
     $('#noHp').val(res.no_hp);
     $('#alamat').val(res.alamat);
     $('#status').val(res.status).trigger('change');

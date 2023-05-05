@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('tbl_barang', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('periode_id')->nullable();
             $table->string('nama')->nullable();
             $table->string('merk')->nullable();
             $table->bigInteger('total')->nullable();
@@ -23,6 +24,12 @@ return new class extends Migration
             $table->string('deleted_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
+
+            $table->foreign('periode_id')
+                ->references('id')
+                ->on('tbl_periode')
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
         });
     }
 

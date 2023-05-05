@@ -83,6 +83,7 @@ class PenggajianController extends Controller
     // * Method for prepare page create penggajian
     public function preparePagePenggajian(Request $req)
     {
+        $q    = $req->q;
         $data = array();
 
         if ($req->type == 'periode') {
@@ -90,13 +91,19 @@ class PenggajianController extends Controller
                 'id',
                 'tgl_periode'
             )
+                ->where([
+                    ['tgl_periode', 'like', '%' . $q . '%'],
+                ])
                 ->get();
         } else if ($req->type == 'karyawan') {
             $data = Karyawan::select(
                 'id',
                 'nama'
             )
-                ->where('status', 1)
+                ->where([
+                    ['nama', 'like', '%' . $q . '%'],
+                    ['status', '=', 1],
+                ])
                 ->get();
         } else if ($req->type == 'barang') {
             $data = Barang::select(
@@ -104,12 +111,19 @@ class PenggajianController extends Controller
                 'nama',
                 'merk'
             )
+                ->where([
+                    ['nama', 'like', '%' . $q . '%'],
+                ])
                 ->get();
         } else if ($req->type == 'item' && $req->barangId != '') {
             $data = Item::select(
                 'id',
                 'nama'
             )
+                ->where([
+                    ['nama', 'like', '%' . $q . '%'],
+                    ['barang_id', '=', $req->barangId],
+                ])
                 ->where('barang_id', $req->barangId)
                 ->get();
         }
@@ -200,7 +214,7 @@ class PenggajianController extends Controller
             ->join('tbl_barang', 'tbl_barang.id', '=', 'tbl_item.barang_id')
             ->join('tbl_data_gaji', 'tbl_data_gaji.sub_item_id', '=', 'tbl_sub_item.id')
             ->where([
-                ['tbl_sub_item.periode_id', '=', $periodeId],
+                ['tbl_barang.periode_id', '=', $periodeId],
                 ['tbl_data_gaji.karyawan_id', '=', $karyawanId],
             ])
             ->get();

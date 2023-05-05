@@ -33,7 +33,7 @@ class TransaksiItemService
         $totalPengerjaanItem = $data['totalPengerjaanItem'];
 
         // * Validation custom for item
-        $validItem = self::validationItem($item, $totalPengerjaanItem);
+        $validItem = self::validationItem($item, $totalPengerjaanItem, $tglPeriode);
         if ($validItem == self::$msgPengerjaanItem) {
             return self::$msgPengerjaanItem;
         } else if ($validItem == self::$msgTmpBarangNol) {
@@ -44,7 +44,6 @@ class TransaksiItemService
 
         // * Create sub item data for penggajian
         $createSubItem = SubItem::create([
-            'periode_id'            => $tglPeriode,
             'item_id'               => $item->id,
             'total_pengerjaan_item' => $totalPengerjaanItem,
         ]);
@@ -113,12 +112,15 @@ class TransaksiItemService
     }
 
     // * Manage validation total item
-    private static function validationItem($itemId, $totalPengerjaanItem)
+    private static function validationItem($itemId, $totalPengerjaanItem, $periodeId)
     {
-        $item = Item::findOrFail($itemId);
+        $item = Item::where('id', $itemId)
+            ->with('barang', function ($query) use ($periodeId) {
+                $query->where('periode_id', $periodeId);
+            });
 
         if ($item) {
-            if ($totalPengerjaanItem > $item->total_tmp_barang) { // * Validasi jika input total pengerjaan item > total tmp barang
+            if ($totalPengerjaanItem > $item->total_tmp_barang && $item->barang->periode_id == $periodeId) { // * Validasi jika input total pengerjaan item > total tmp barang
                 return self::$msgPengerjaanItem;
             } else if ($item->total_tmp_barang == 0) { // * Validasi jika tmp barang pada item = 0
                 return self::$msgTmpBarangNol;
@@ -138,9 +140,10 @@ class TransaksiItemService
         )
             ->join('tbl_sub_item', 'tbl_sub_item.id', '=', 'tbl_data_gaji.sub_item_id')
             ->join('tbl_item', 'tbl_item.id', '=', 'tbl_sub_item.item_id')
+            ->join('tbl_barang', 'tbl_barang.id', '=', 'tbl_item.barang_id')
             ->where([
                 'tbl_data_gaji.karyawan_id' => $karyawanId,
-                'tbl_sub_item.periode_id'   => $periodeId,
+                'tbl_barang.periode_id'     => $periodeId,
             ])
             ->get();
 
@@ -187,7 +190,7 @@ class TransaksiItemService
         }
 
         // * Validation custom for item
-        $validItem = self::validationItem($item->id, $cekInputTotalPengerjaanItem);
+        $validItem = self::validationItem($item->id, $cekInputTotalPengerjaanItem, $tglPeriode);
         if ($validItem == self::$msgPengerjaanItem) {
             return self::$msgPengerjaanItem;
         } else if ($validItem == self::$msgTmpBarangNol) {

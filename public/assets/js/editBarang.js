@@ -83,4 +83,37 @@ $(function () {
             }
         });
     });
+
+    $('#tglPeriode').select2({
+        theme: 'bootstrap4',
+        placeholder: 'Pilih Periode',
+        allowClear: true,
+        disabled: true,
+        ajax: {
+            url: routeOptPenggajian,
+            dataType: 'json',
+            type: 'GET',
+            data: function () {
+                let query = {
+                    type: 'periode'
+                }
+
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: changeToDMY(item.tgl_periode),
+                            id: item.id
+                        }
+                    })
+                }
+            }
+        }
+    });
+
+    $("#tglPeriode").select2("trigger", "select", {
+        data: { id: dataPeriode.id, text: changeToDMY(dataPeriode.tgl_periode) }
+    });
 });

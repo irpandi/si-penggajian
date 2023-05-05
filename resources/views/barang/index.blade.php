@@ -21,6 +21,13 @@
                         <input type="hidden" name="_method" id="method">
 
                         <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Tanggal Periode" id="tglPeriode" name="tglPeriode">
+                            <div class="input-group-text">
+                                <i class="fas fa-table"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama">
                             <div class="input-group-text">
                                 <i class="fas fa-table"></i>

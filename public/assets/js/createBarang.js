@@ -44,4 +44,34 @@ $(function () {
     $(this).on('click', '#deleteItem', function () {
         $(this).closest('#inputFormItem').remove();
     });
+
+    // * Select2 tglPeriode
+    $('#tglPeriode').select2({
+        theme: 'bootstrap4',
+        placeholder: 'Pilih Periode',
+        allowClear: true,
+        ajax: {
+            url: routeOptPenggajian,
+            dataType: 'json',
+            type: 'GET',
+            data: function (params) {
+                let query = {
+                    type: 'periode',
+                    q: params.term
+                }
+
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: changeToDMY(item.tgl_periode),
+                            id: item.id
+                        }
+                    })
+                }
+            }
+        }
+    });
 });

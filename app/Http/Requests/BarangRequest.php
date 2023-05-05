@@ -27,9 +27,10 @@ class BarangRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama'  => 'required',
-            'merk'  => 'required',
-            'total' => 'required|numeric',
+            'tglPeriode' => 'required',
+            'nama'       => 'required',
+            'merk'       => 'required',
+            'total'      => 'required|numeric',
         ];
     }
 
@@ -37,10 +38,11 @@ class BarangRequest extends FormRequest
     public function messages()
     {
         return [
-            'nama.required'  => 'Nama wajib diisi',
-            'merk.required'  => 'Merk wajib diisi',
-            'total.required' => 'Total wajib diisi',
-            'total.numeric'  => 'Total harus angka',
+            'tglPeriode.required' => 'Tanggal Periode wajib diisi',
+            'nama.required'       => 'Nama wajib diisi',
+            'merk.required'       => 'Merk wajib diisi',
+            'total.required'      => 'Total wajib diisi',
+            'total.numeric'       => 'Total harus angka',
         ];
     }
 }

@@ -32,6 +32,7 @@ class KaryawanRequest extends FormRequest
             'status'       => 'required',
             'noHp'         => 'required|numeric',
             'alamat'       => 'required',
+            'jenisKelamin' => 'required',
         ];
     }
 
@@ -45,6 +46,7 @@ class KaryawanRequest extends FormRequest
             'noHp.required'         => 'Nomor Handphone wajib diisi',
             'noHp.numeric'          => 'Nomor Handphone harus angka',
             'alamat.required'       => 'Alamat wajib diisi',
+            'jenisKelamin.required' => 'Jenis Kelamin wajib diisi',
         ];
     }
 }

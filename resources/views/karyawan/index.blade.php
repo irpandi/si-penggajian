@@ -59,6 +59,16 @@
                         </div>
 
                         <div class="input-group mb-3">
+                            <select class="form-control select2Default select2Css" id="jenisKelamin" name="jenisKelamin">
+                                <option value="pria">Pria</option>
+                                <option value="wanita">Wanita</option>
+                            </select>
+                            <div class="input-group-text">
+                                <i class="fas fa-table"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Nomor Handphone" id="noHp" name="noHp">
                             <div class="input-group-text">
                                 <i class="fas fa-address-book"></i>

@@ -33,6 +33,15 @@
         
                             <div class="card-body">
                                 <div class="input-group mb-3">
+                                    <select class="form-control" id="tglPeriode" name="tglPeriode" required>
+                                        <option></option>
+                                    </select>
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+
+                                <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama" required>
                                     <div class="input-group-text">
                                         <i class="fas fa-table"></i>
@@ -122,6 +131,9 @@
 @endsection
 
 @section('script')
+<script type="text/javascript">
+    var routeOptPenggajian = "{{ route('penggajian.optPenggajian') }}";
+</script>
 <script type="text/javascript" src="{{ asset('assets/js/createBarang.js?nocache='.time()) }}"></script>
 @if(session('status'))
 <script type="text/javascript">

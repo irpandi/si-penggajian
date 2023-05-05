@@ -25,6 +25,9 @@
                     <form action="{{ route('barang.update', $data['barang']->id) }}" method="post">
                         @csrf
                         @method('put')
+
+                        <input type="hidden" name="tglPeriode" value="{{ $data['barang']->periode_id }}">
+                        <input type="hidden" id="dataPeriode" value="{{ $data['barang']->periode }}">
                         <div class="card card-outline card-success">
                             <div class="card-header">
                                 <div class="card-title">
@@ -33,6 +36,15 @@
                             </div>
         
                             <div class="card-body">
+                                <div class="input-group mb-3">
+                                    <select class="form-control" id="tglPeriode">
+                                        <option></option>
+                                    </select>
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar-alt"></i>
+                                    </div>
+                                </div>
+
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama" value="{{ $data['barang']->nama }}" required>
                                     <div class="input-group-text">
@@ -162,7 +174,9 @@
 @section('script')
 <script type="text/javascript">
     var routeDestroyItem = "{{ route('barang.destroy.item', ':id') }}",
-        csrfToken = "{{ csrf_token() }}";
+        csrfToken = "{{ csrf_token() }}",
+        routeOptPenggajian = "{{ route('penggajian.optPenggajian') }}",
+        dataPeriode = JSON.parse($('#dataPeriode').val());
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/editBarang.js?nocache='.time()) }}"></script>
 @if(session('message'))

@@ -62,7 +62,8 @@ $(function () {
 function fillBarang(res, disable) {
     let nama = $('#nama'),
         merk = $('#merk'),
-        total = $('#total');
+        total = $('#total'),
+        tglPeriode = $('#tglPeriode');
 
     if (disable == undefined) {
         disable = false;
@@ -72,7 +73,12 @@ function fillBarang(res, disable) {
     merk.val(res.merk);
     total.val(res.total);
 
+    if (res.periode) {
+        tglPeriode.val(changeToDMY(res.periode.tgl_periode));
+    }
+
     nama.prop('disabled', disable);
     merk.prop('disabled', disable);
     total.prop('disabled', disable);
+    tglPeriode.prop('disabled', disable);
 }

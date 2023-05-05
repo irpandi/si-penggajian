@@ -55,16 +55,18 @@ class BarangController extends Controller
     // * Method for store data barang
     public function store(BarangRequest $req)
     {
-        $nama      = $req->nama;
-        $merk      = $req->merk;
-        $total     = $req->total;
-        $namaItem  = $req->namaItem;
-        $hargaItem = $req->hargaItem;
+        $tglPeriode = $req->tglPeriode;
+        $nama       = $req->nama;
+        $merk       = $req->merk;
+        $total      = $req->total;
+        $namaItem   = $req->namaItem;
+        $hargaItem  = $req->hargaItem;
 
         $create = array(
-            'nama'  => $nama,
-            'merk'  => $merk,
-            'total' => $total,
+            'periode_id' => $tglPeriode,
+            'nama'       => $nama,
+            'merk'       => $merk,
+            'total'      => $total,
         );
 
         $barang = Barang::create($create);
@@ -95,7 +97,9 @@ class BarangController extends Controller
     // * Method for view data barang
     public function show(Request $req, $id)
     {
-        $data = Barang::find($id);
+        $data = Barang::where('id', $id)
+            ->with(['periode', 'item'])
+            ->first();
 
         if ($req->dataTables) {
             $item = $data->item;

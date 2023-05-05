@@ -27,14 +27,14 @@ return new class extends Migration
             $table->foreign('karyawan_id')
                 ->references('id')
                 ->on('tbl_karyawan')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
 
             $table->foreign('periode_id')
                 ->references('id')
                 ->on('tbl_periode')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+                ->onUpdate('NO ACTION')
+                ->onDelete('NO ACTION');
         });
     }
 

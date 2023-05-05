@@ -17,4 +17,9 @@ class Barang extends Model
     {
         return $this->hasMany(Item::class, 'barang_id', 'id');
     }
+
+    public function periode()
+    {
+        return $this->hasOne(Periode::class, 'id', 'periode_id');
+    }
 }
