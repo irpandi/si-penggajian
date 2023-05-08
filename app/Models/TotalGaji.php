@@ -13,4 +13,9 @@ class TotalGaji extends Model
 
     protected $table   = 'tbl_total_gaji';
     protected $guarded = ['id'];
+
+    public function tunjangan()
+    {
+        return $this->hasMany(Tunjangan::class, 'total_gaji_id', 'id');
+    }
 }

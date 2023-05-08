@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tbl_periode', function (Blueprint $table) {
-            //
+            $table->dropColumn('tgl_periode');
         });
     }
 };

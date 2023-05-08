@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Jumlah Tunjangan" id="jumlahTunjangan" name="jumlahTunjangan">
+                            <input type="number" class="form-control" placeholder="Jumlah Tunjangan" id="jumlahTunjangan" name="jumlahTunjangan">
                             <div class="input-group-text">
                                 <i class="fas fa-table"></i>
                             </div>
@@ -51,6 +51,20 @@
 @section('content')
     <section class="content">
         <div class="container">
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show errorAlert" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+    
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <input type="hidden" id="karyawanId" value="{{ $data['karyawan']->id }}">
             <input type="hidden" id="periodeId" value="{{ $data['periode']->id }}">
             <input type="hidden" id="totalGajiId" value="{{ $data['karyawan']->totalGaji->id }}">
@@ -190,7 +204,10 @@
         karyawanId = $('#karyawanId').val(),
         routeDestroyGaji = "{{ route('penggajian.destroy.gaji', ':id') }}",
         csrfToken = "{{ csrf_token() }}",
-        routeRefreshTotalGaji = "{{ route('penggajian.refreshTotalGaji', ':id') }}";
+        routeRefreshTotalGaji = "{{ route('penggajian.refreshTotalGaji', ':id') }}",
+        routeAddTunjangan = "{{ route('tunjangan.store') }}",
+        routeListTunjangan = "{{ route('tunjangan.listTunjangan') }}",
+        totalGajiId = $('#totalGajiId').val();
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/showPenggajian.js?nocache='.time()) }}"></script>
 @if(session('message'))

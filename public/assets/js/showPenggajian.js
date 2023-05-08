@@ -16,7 +16,24 @@ $(function () {
         ]
     });
 
-    $('#tblTunjangan').DataTable();
+    $('#tblTunjangan').DataTable({
+        processing: true,
+        serverSide: true,
+        responsive: true,
+        ajax: {
+            url: routeListTunjangan + '?totalGajiId=' + totalGajiId
+        },
+        columns: [
+            { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { data: 'nama', name: 'nama' },
+            { data: 'jumlah', name: 'jumlah' },
+            { data: 'action', name: 'action' }
+        ]
+    });
+
+    $('#btnSaveTunjangan').click(function () {
+        $('#formTemplateTunjangan').submit();
+    });
 
     // * For show modal tambah tunjangan
     $('#btnTambahTunjangan').click(function () {
@@ -26,6 +43,12 @@ $(function () {
         }
 
         $('#titleModal').text('Tambah Tunjangan');
+        $('#formTemplateTunjangan').attr('action', routeAddTunjangan);
+        $('#formTemplateTunjangan').attr('method', 'post');
+        $('#method').val('');
+
+        // * Clear data tunjangan
+        fillTunjangan(data);
     });
 
     // * For show delete subItem

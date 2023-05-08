@@ -5,6 +5,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PenggajianController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\TunjanganController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -98,6 +99,15 @@ Route::middleware('login')->group(function () {
                     Route::delete('/{id}', 'deleteDataGaji')->name('destroy.gaji');
                     Route::get('/refreshTotalGaji/{id}', 'refreshTotalGaji')->name('refreshTotalGaji');
                 });
+            });
+        });
+    });
+
+    Route::controller(TunjanganController::class)->group(function () {
+        Route::prefix('tunjangan')->group(function () {
+            Route::name('tunjangan.')->group(function () {
+                Route::get('/listTunjangan', 'dataTables')->name('listTunjangan');
+                Route::post('/', 'store')->name('store');
             });
         });
     });

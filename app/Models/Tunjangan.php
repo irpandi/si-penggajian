@@ -10,6 +10,6 @@ class Tunjangan extends Model
 {
     use HasFactory, CreatedUpdatedBy;
 
-    protected $table   = ['tbl_tunjangan'];
+    protected $table   = 'tbl_tunjangan';
     protected $guarded = ['id'];
 }

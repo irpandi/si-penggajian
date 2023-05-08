@@ -28,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tbl_transaksi_item', function (Blueprint $table) {
-            //
+            $table->dropColumn(['before_total_tmp_barang', 'after_total_tmp_barang', 'selisih_total_tmp_barang']);
         });
     }
 };
