@@ -22,6 +22,7 @@ class TransaksiItemService
     public static $msgValidItem              = 'valid_total_pengerjaan_item';
     public static $msgStore                  = 'store';
     public static $msgUpdate                 = 'update';
+    public static $msgDestroy                = 'destroy';
 
     // * Manage store to database for add penggajian
     public static function storePenggajian($data)
@@ -117,7 +118,8 @@ class TransaksiItemService
         $item = Item::where('id', $itemId)
             ->with('barang', function ($query) use ($periodeId) {
                 $query->where('periode_id', $periodeId);
-            });
+            })
+            ->first();
 
         if ($item) {
             if ($totalPengerjaanItem > $item->total_tmp_barang && $item->barang->periode_id == $periodeId) { // * Validasi jika input total pengerjaan item > total tmp barang
@@ -147,21 +149,19 @@ class TransaksiItemService
             ])
             ->get();
 
-        if (count($dataGaji) > 0) {
-            $pengerjaanItemGaji = array();
-            foreach ($dataGaji as $value) {
-                $jmlhPengerjaanItem = $value->total_pengerjaan_item * $value->harga;
-                array_push($pengerjaanItemGaji, $jmlhPengerjaanItem);
-            }
-
-            $totalGaji = array_sum($pengerjaanItemGaji);
-            TotalGaji::updateOrCreate([
-                'karyawan_id' => $karyawanId,
-                'periode_id'  => $periodeId,
-            ], [
-                'total' => $totalGaji,
-            ]);
+        $pengerjaanItemGaji = array();
+        foreach ($dataGaji as $value) {
+            $jmlhPengerjaanItem = $value->total_pengerjaan_item * $value->harga;
+            array_push($pengerjaanItemGaji, $jmlhPengerjaanItem);
         }
+
+        $totalGaji = array_sum($pengerjaanItemGaji);
+        TotalGaji::updateOrCreate([
+            'karyawan_id' => $karyawanId,
+            'periode_id'  => $periodeId,
+        ], [
+            'total' => $totalGaji,
+        ]);
     }
 
     // * Manage update to database for edit penggajian
@@ -238,6 +238,44 @@ class TransaksiItemService
             self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
         }
 
+        // * Hitung total gaji
+        self::manageTotalGaji($tglPeriode, $karyawan);
+
         return self::$msgUpdate;
+    }
+
+    // * Method for delete data penggajian
+    public static function deleteDataGaji($id)
+    {
+        $dataGaji = DataGaji::where('id', $id)
+            ->with([
+                'subItem',
+                'subItem.item',
+                'subItem.item.barang',
+            ])
+            ->first();
+
+        $subItemId           = $dataGaji->sub_item_id;
+        $itemId              = $dataGaji->subItem->item_id;
+        $totalPengerjaanItem = $dataGaji->subItem->total_pengerjaan_item;
+        $totalTmpBarang      = $dataGaji->subItem->item->total_tmp_barang;
+        $periodeId           = $dataGaji->subItem->item->barang->periode_id;
+        $karyawanId          = $dataGaji->karyawan_id;
+
+        Item::where('id', $itemId)
+            ->update([
+                'total_tmp_barang' => $totalPengerjaanItem + $totalTmpBarang,
+            ]);
+
+        $subItem = SubItem::where('id', $subItemId)
+            ->first();
+
+        $subItem->delete();
+        $dataGaji->delete();
+
+        // * Hitung total gaji
+        self::manageTotalGaji($periodeId, $karyawanId);
+
+        return self::$msgDestroy;
     }
 }

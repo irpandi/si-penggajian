@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PenggajianRequest;
 use App\Http\Service\General;
+use App\Http\Service\KaryawanService;
 use App\Http\Service\TransaksiItemService;
 use App\Models\Barang;
 use App\Models\DataGaji;
@@ -23,7 +24,7 @@ class PenggajianController extends Controller
     {
         $data = array(
             'title'       => 'Data Penggajian',
-            'breadcrumbs' => '<li class="breadcrumb-item">Data Penggajian</li>',
+            'breadcrumbs' => '<li class="breadcrumb-item active">Data Penggajian</li>',
         );
 
         return view('penggajian.index', compact('data'));
@@ -41,6 +42,10 @@ class PenggajianController extends Controller
         )
             ->join('tbl_karyawan', 'tbl_karyawan.id', '=', 'tbl_total_gaji.karyawan_id')
             ->join('tbl_periode', 'tbl_periode.id', '=', 'tbl_total_gaji.periode_id')
+            ->where([
+                ['tbl_karyawan.status', '=', KaryawanService::$activeStatus],
+            ])
+            ->orderBy('tbl_karyawan.nama', 'asc')
             ->get();
 
         return DataTables::of($data)
@@ -72,7 +77,7 @@ class PenggajianController extends Controller
         $data = array(
             'title'       => 'Tambah Data',
             'breadcrumbs' => '
-                <li class="breadcrumb-item"><a href="/penggajian">Data Penggajian</a></li>
+                <li class="breadcrumb-item"><a href="' . route('penggajian.index') . '">Data Penggajian</a></li>
                 <li class="breadcrumb-item active">Tambah Data</li>
             ',
         );
@@ -102,7 +107,7 @@ class PenggajianController extends Controller
             )
                 ->where([
                     ['nama', 'like', '%' . $q . '%'],
-                    ['status', '=', 1],
+                    ['status', '=', KaryawanService::$activeStatus],
                 ])
                 ->get();
         } else if ($req->type == 'barang' && $req->periodeId != '') {
@@ -198,7 +203,7 @@ class PenggajianController extends Controller
         $periodeId  = $req->periodeId;
         $karyawanId = $req->karyawanId;
 
-        $data = SubItem::select(
+        $data = DataGaji::select(
             'tbl_sub_item.id',
             'tbl_item.nama as nama_item',
             'tbl_barang.nama as nama_barang',
@@ -207,9 +212,9 @@ class PenggajianController extends Controller
             'tbl_barang.merk as merk_barang',
             'tbl_data_gaji.id as data_gaji_id'
         )
+            ->join('tbl_sub_item', 'tbl_sub_item.id', '=', 'tbl_data_gaji.sub_item_id')
             ->join('tbl_item', 'tbl_item.id', '=', 'tbl_sub_item.item_id')
             ->join('tbl_barang', 'tbl_barang.id', '=', 'tbl_item.barang_id')
-            ->join('tbl_data_gaji', 'tbl_data_gaji.sub_item_id', '=', 'tbl_sub_item.id')
             ->where([
                 ['tbl_barang.periode_id', '=', $periodeId],
                 ['tbl_data_gaji.karyawan_id', '=', $karyawanId],
@@ -222,7 +227,7 @@ class PenggajianController extends Controller
                 $btn = '
                     <div class="btn-group">
                         <a href="' . route('penggajian.edit', $row->data_gaji_id) . '" class="btn btn-sm btn-success">Edit</a>
-                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger btnDeleteSubItem" data-id="' . $row->data_gaji_id . '">Delete</button>
                     </div>
                 ';
 
@@ -258,7 +263,7 @@ class PenggajianController extends Controller
             'title'       => 'Edit Data',
             'breadcrumbs' => '
                 <li class="breadcrumb-item"><a href="' . route('penggajian.index') . '">Data Penggajian</a></li>
-                <li class="breadcrumb-item"><a href="' . route('penggajian.show', ['karyawanId' => $dataGaji->karyawan_id, 'periodeId' => $dataGaji->subItem->periode_id]) . '">Lihat Data Penggajian</a></li>
+                <li class="breadcrumb-item"><a href="' . route('penggajian.show', ['karyawanId' => $dataGaji->karyawan_id, 'periodeId' => $dataGaji->subItem->item->barang->periode_id]) . '">Lihat Data Penggajian</a></li>
                 <li class="breadcrumb-item active">Edit Data</li>
             ',
             'dataGaji'    => $dataGaji,
@@ -306,5 +311,30 @@ class PenggajianController extends Controller
             'icon'    => 'success',
             'title'   => 'Sukses',
         ]);
+    }
+
+    // * Method for action delete penggajian on page show data penggajian
+    public function deleteDataGaji($id)
+    {
+        $message    = 'Berhasil delete gaji';
+        $iconStatus = 'success';
+        $code       = 200;
+
+        TransaksiItemService::deleteDataGaji($id);
+
+        $response = array(
+            'message'    => $message,
+            'iconStatus' => $iconStatus,
+        );
+
+        return response()->json($response, $code);
+    }
+
+    // * Method for refresh total gaji in page show data penggajian
+    public function refreshTotalGaji($id)
+    {
+        $totalGaji = TotalGaji::find($id);
+
+        return response()->json($totalGaji);
     }
 }

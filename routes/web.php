@@ -27,6 +27,8 @@ Route::controller(UserController::class)->group(function () {
             Route::get('/logout', 'logout')->name('signout');
         });
     });
+
+    Route::get('/health', 'health')->name('health');
 });
 
 Route::middleware('login')->group(function () {
@@ -91,6 +93,11 @@ Route::middleware('login')->group(function () {
                 Route::get('/create', 'create')->name('create');
                 Route::post('/', 'store')->name('store');
                 Route::put('/{id}', 'update')->name('update');
+
+                Route::prefix('gaji')->group(function () {
+                    Route::delete('/{id}', 'deleteDataGaji')->name('destroy.gaji');
+                    Route::get('/refreshTotalGaji/{id}', 'refreshTotalGaji')->name('refreshTotalGaji');
+                });
             });
         });
     });

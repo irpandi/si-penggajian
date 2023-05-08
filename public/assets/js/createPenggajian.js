@@ -16,6 +16,8 @@ $(function () {
                 return query;
             },
             processResults: function (data) {
+                $('#barang').val("").trigger('change');
+
                 return {
                     results: $.map(data, function (item) {
                         return {
@@ -75,6 +77,8 @@ $(function () {
                 return query;
             },
             processResults: function (data) {
+                $('#item').val("").trigger('change');
+
                 return {
                     results: $.map(data, function (item) {
                         return {

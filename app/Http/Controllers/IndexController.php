@@ -17,7 +17,7 @@ class IndexController extends Controller
     {
         $data = array(
             'title'       => 'Home',
-            'breadcrumbs' => '<li class="breadcrumb-item">Home</li>',
+            'breadcrumbs' => '<li class="breadcrumb-item active">Home</li>',
             'user'        => $this->currentUser(),
         );
 

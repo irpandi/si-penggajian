@@ -16,7 +16,7 @@ class KaryawanController extends Controller
     {
         $data = array(
             'title'       => 'Data Karyawan',
-            'breadcrumbs' => '<li class="breadcrumb-item">Data Karyawan</li>',
+            'breadcrumbs' => '<li class="breadcrumb-item active">Data Karyawan</li>',
         );
 
         return view('karyawan.index', compact('data'));

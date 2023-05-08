@@ -27,10 +27,48 @@ $(function () {
 
         $('#titleModal').text('Tambah Tunjangan');
     });
+
+    // * For show delete subItem
+    $(this).on('click', '.btnDeleteSubItem', function () {
+        let id = $(this).data('id'),
+            dataAjax = {};
+
+        routeDestroyGaji = routeDestroyGaji.replace(':id', id);
+
+        dataAjax = {
+            route: routeDestroyGaji,
+            method: 'DELETE',
+            dataTableId: '#tblGaji'
+        };
+
+        customSweetAlertConfirm('Apakah Anda Yakin ?', 'Ya', 'Tidak', dataAjax, refreshTotalGaji());
+        routeDestroyGaji = routeDestroyGaji.replace(id, ':id');
+    });
 });
 
 // * for fill data tunjangan in modal
 function fillTunjangan(res) {
     $('#namaTunjangan').val(res.nama);
     $('#jumlahTunjangan').val(res.jumlah);
+}
+
+// * Refresh Total Gaji function
+function refreshTotalGaji() {
+    return `let totalGajiId = $('#totalGajiId').val();
+
+    routeRefreshTotalGaji = routeRefreshTotalGaji.replace(':id', totalGajiId);
+
+    $.ajax({
+        url: routeRefreshTotalGaji,
+        method: 'GET',
+        success: function (res) {
+            let gaji = formatterNumber(res.total);
+
+            $('#totalGaji').text('Rp. ' + gaji);
+        }, error: function (err) {
+            console.log(err);
+        }
+    });
+
+    routeRefreshTotalGaji = routeRefreshTotalGaji.replace(totalGajiId, ':id')`;
 }

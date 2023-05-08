@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('tbl_sub_item', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('periode_id')->nullable();
             $table->unsignedBigInteger('item_id')->nullable();
             $table->bigInteger('total_pengerjaan_item')->nullable();
             $table->string('created_by')->nullable();
@@ -23,12 +22,6 @@ return new class extends Migration
             $table->string('deleted_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
-
-            $table->foreign('periode_id')
-                ->references('id')
-                ->on('tbl_periode')
-                ->onUpdate('NO ACTION')
-                ->onDelete('NO ACTION');
 
             $table->foreign('item_id')
                 ->references('id')

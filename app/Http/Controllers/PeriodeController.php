@@ -15,7 +15,7 @@ class PeriodeController extends Controller
     {
         $data = array(
             'title'       => 'Data Periode',
-            'breadcrumbs' => '<li class="breadcrumb-item">Data Periode</li>',
+            'breadcrumbs' => '<li class="breadcrumb-item active">Data Periode</li>',
         );
 
         return view('periode.index', compact('data'));

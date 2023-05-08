@@ -32,7 +32,7 @@ function customSweetAlert(icon, title, msg) {
 }
 
 // * Function manage SweetAlert Confirmation
-function customSweetAlertConfirm(title, confirmText, denyButtonText, dataAjax) {
+function customSweetAlertConfirm(title, confirmText, denyButtonText, dataAjax, afterSuccess = undefined) {
     Swal.fire({
         title: title,
         showCancelButton: true,
@@ -61,10 +61,24 @@ function customSweetAlertConfirm(title, confirmText, denyButtonText, dataAjax) {
                     if (dataTableId) {
                         $(dataTableId).DataTable().ajax.reload();
                     }
+
+                    if (afterSuccess != undefined) {
+                        eval(afterSuccess);
+                    }
                 }, error: function (err) {
                     console.log(err);
                 }
             });
         }
     });
+}
+
+// * function Formatter number
+function formatterNumber(number) {
+    let data = (number).toLocaleString(
+        'de-DE',
+        { minimumFractionDigits: 0 }
+    );
+
+    return data;
 }

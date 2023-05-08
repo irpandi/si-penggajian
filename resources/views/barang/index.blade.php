@@ -87,6 +87,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Periode</th>
                                     <th>Nama</th>
                                     <th>Merk</th>
                                     <th>Total</th>

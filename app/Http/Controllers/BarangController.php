@@ -31,8 +31,10 @@ class BarangController extends Controller
             'id',
             'nama',
             'merk',
-            'total'
+            'total',
+            'periode_id'
         )
+            ->with(['periode'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -47,6 +49,11 @@ class BarangController extends Controller
                 ';
 
                 return $btn;
+            })
+            ->editColumn('periode.tgl_periode', function ($row) {
+                $date = General::manageDate('Y-m-d', $row->periode->tgl_periode, 'd/m/Y');
+
+                return $date;
             })
             ->rawColumns(['action'])
             ->make(true);

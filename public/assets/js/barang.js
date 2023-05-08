@@ -8,6 +8,7 @@ $(function () {
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+            { data: 'periode.tgl_periode', name: 'periode.tgl_periode' },
             { data: 'nama', name: 'nama' },
             { data: 'merk', name: 'merk' },
             { data: 'total', name: 'total' },

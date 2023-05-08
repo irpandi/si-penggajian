@@ -53,6 +53,7 @@
         <div class="container">
             <input type="hidden" id="karyawanId" value="{{ $data['karyawan']->id }}">
             <input type="hidden" id="periodeId" value="{{ $data['periode']->id }}">
+            <input type="hidden" id="totalGajiId" value="{{ $data['karyawan']->totalGaji->id }}">
             <div class="row">
                 {{-- Data Karyawan --}}
                 <div class="col-md-12">
@@ -75,6 +76,12 @@
                                     <td>Nama</td>
                                     <td>:</td>
                                     <td>{{ $data['karyawan']->nama }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td>Jenis Kelamin</td>
+                                    <td>:</td>
+                                    <td>{{ ucwords($data['karyawan']->jenis_kelamin) }}</td>
                                 </tr>
 
                                 <tr>
@@ -104,7 +111,7 @@
                                 <tr>
                                     <td>Total Gaji</td>
                                     <td>:</td>
-                                    <td>{{ General::formaterNumber($data['karyawan']->totalGaji->total, 0) }}</td>
+                                    <td><span id="totalGaji">{{ General::formaterNumber($data['karyawan']->totalGaji->total, 0) }}</span></td>
                                 </tr>
                             </table>
                         </div>
@@ -180,7 +187,10 @@
 <script type="text/javascript">
     var routeTblGaji = "{{ route('penggajian.listGaji') }}",
         periodeId = $('#periodeId').val(),
-        karyawanId = $('#karyawanId').val();
+        karyawanId = $('#karyawanId').val(),
+        routeDestroyGaji = "{{ route('penggajian.destroy.gaji', ':id') }}",
+        csrfToken = "{{ csrf_token() }}",
+        routeRefreshTotalGaji = "{{ route('penggajian.refreshTotalGaji', ':id') }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/showPenggajian.js?nocache='.time()) }}"></script>
 @if(session('message'))

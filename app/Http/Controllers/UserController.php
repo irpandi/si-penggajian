@@ -43,4 +43,15 @@ class UserController extends Controller
 
         return redirect()->route('login.signin');
     }
+
+    // * Method for check application health
+    public function health()
+    {
+        $data = array(
+            'code'     => 200,
+            'response' => 'Healthy',
+        );
+
+        return response()->json($data);
+    }
 }
