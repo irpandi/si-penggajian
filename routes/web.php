@@ -110,6 +110,7 @@ Route::middleware('login')->group(function () {
                 Route::get('/{id}', 'show')->name('show');
                 Route::post('/', 'store')->name('store');
                 Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
             });
         });
     });

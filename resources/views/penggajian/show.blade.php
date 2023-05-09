@@ -210,7 +210,8 @@
         routeListTunjangan = "{{ route('tunjangan.listTunjangan') }}",
         totalGajiId = $('#totalGajiId').val(),
         routeShowTunjangan = "{{ route('tunjangan.show', ':id') }}",
-        routeUpdateTunjangan = "{{ route('tunjangan.update', ':id') }}";
+        routeUpdateTunjangan = "{{ route('tunjangan.update', ':id') }}",
+        routeDestroyTunjangan = "{{ route('tunjangan.destroy', ':id') }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/showPenggajian.js?nocache='.time()) }}"></script>
 @if(session('message'))

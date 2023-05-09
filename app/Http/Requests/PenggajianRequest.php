@@ -31,7 +31,7 @@ class PenggajianRequest extends FormRequest
             'karyawan'            => 'required',
             'barang'              => 'required',
             'item'                => 'required',
-            'totalPengerjaanItem' => 'required|numeric',
+            'totalPengerjaanItem' => 'required|numeric|min:0',
         ];
     }
 
@@ -45,6 +45,7 @@ class PenggajianRequest extends FormRequest
             'item.required'                => 'Item wajib diisi',
             'totalPengerjaanItem.required' => 'Total pengerjaan item wajib diisi',
             'totalPengerjaanItem.numeric'  => 'Total pengerjaan item harus angka',
+            'totalPengerjaanItem.min'      => 'Total pengerjaan item minimal angka 0',
         ];
     }
 }

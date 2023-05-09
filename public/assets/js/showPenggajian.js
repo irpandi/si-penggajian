@@ -93,6 +93,23 @@ $(function () {
 
         routeUpdateTunjangan = routeUpdateTunjangan.replace(id, ':id');
     });
+
+    // * For delete tunjangan
+    $(this).on('click', '.btnDestroyTunjangan', function () {
+        let id = $(this).data('id'),
+            dataAjax = {};
+
+        routeDestroyTunjangan = routeDestroyTunjangan.replace(':id', id);
+
+        dataAjax = {
+            route: routeDestroyTunjangan,
+            method: 'DELETE',
+            dataTableId: '#tblTunjangan',
+        };
+
+        customSweetAlertConfirm('Apakah anda yakin ?', 'Ya', 'Tidak', dataAjax, refreshTotalGaji());
+        routeDestroyTunjangan = routeDestroyTunjangan.replace(id, ':id');
+    });
 });
 
 // * for fill data tunjangan in modal

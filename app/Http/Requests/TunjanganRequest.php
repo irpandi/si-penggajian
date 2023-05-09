@@ -26,7 +26,7 @@ class TunjanganRequest extends FormRequest
     {
         return [
             'namaTunjangan'   => 'required',
-            'jumlahTunjangan' => 'required|numeric',
+            'jumlahTunjangan' => 'required|numeric|min:0',
         ];
     }
 
@@ -37,6 +37,7 @@ class TunjanganRequest extends FormRequest
             'namaTunjangan.required'   => 'Nama tunjangan wajib diisi',
             'jumlahTunjangan.required' => 'Jumlah tunjangan wajib diisi',
             'jumlahTunjangan.numeric'  => 'Jumlah tunjangan harus angka',
+            'jumlahTunjangan.min'      => 'Jumlah tunjangan minimal angka 0',
         ];
     }
 }

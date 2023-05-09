@@ -54,7 +54,7 @@ class TunjanganController extends Controller
                 $btn = '
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-success btnEditTunjangan" data-id="' . $row->id . '" data-target=".modalTemplateTunjangan" data-toggle="modal">Edit</button>
-                        <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                        <button type="button" class="btn btn-sm btn-danger btnDestroyTunjangan" data-id="' . $row->id . '">Delete</button>
                     </div>
                 ';
 
@@ -78,6 +78,63 @@ class TunjanganController extends Controller
     // * For update data tunjangan
     public function update(TunjanganRequest $req, $id)
     {
-        dd($req);
+        $totalGajiId     = $req->totalGajiId;
+        $namaTunjangan   = $req->namaTunjangan;
+        $jumlahTunjangan = $req->jumlahTunjangan;
+
+        // * Data Before
+        $tunjangan = Tunjangan::findOrFail($id);
+        $totalGaji = TotalGaji::findOrFail($totalGajiId);
+
+        $beforeJumlahTunjangan = $tunjangan->jumlah;
+
+        if ($beforeJumlahTunjangan > $jumlahTunjangan) {
+            $selisihTunjangan = $beforeJumlahTunjangan - $jumlahTunjangan;
+            $totalTunjangan   = $beforeJumlahTunjangan - $selisihTunjangan;
+        } else if ($beforeJumlahTunjangan < $jumlahTunjangan) {
+            $selisihTunjangan = $jumlahTunjangan - $beforeJumlahTunjangan;
+            $totalTunjangan   = $beforeJumlahTunjangan + $selisihTunjangan;
+        } else {
+            $selisihTunjangan = $beforeJumlahTunjangan;
+            $totalTunjangan   = $beforeJumlahTunjangan;
+        }
+
+        Tunjangan::where('id', $tunjangan->id)
+            ->update([
+                'nama'   => $namaTunjangan,
+                'jumlah' => $totalTunjangan,
+            ]);
+
+        // * Manage Total Gaji
+        TransaksiItemService::manageTotalGaji($totalGaji->periode_id, $totalGaji->karyawan_id);
+
+        return back()->with([
+            'message' => 'Data Tunjangan berhasil diupdate',
+            'icon'    => 'success',
+            'title'   => 'Sukses',
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $message    = 'Berhasil delete tunjangan';
+        $iconStatus = 'success';
+        $code       = 200;
+
+        $tunjangan   = Tunjangan::find($id);
+        $totalGajiId = $tunjangan->total_gaji_id;
+        $tunjangan->delete();
+
+        $totalGaji = TotalGaji::find($totalGajiId);
+
+        // * Manage Total Gaji
+        TransaksiItemService::manageTotalGaji($totalGaji->periode_id, $totalGaji->karyawan_id);
+
+        $response = array(
+            'message'    => $message,
+            'iconStatus' => $iconStatus,
+        );
+
+        return response()->json($response, $code);
     }
 }
