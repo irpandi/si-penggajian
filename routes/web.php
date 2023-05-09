@@ -107,7 +107,9 @@ Route::middleware('login')->group(function () {
         Route::prefix('tunjangan')->group(function () {
             Route::name('tunjangan.')->group(function () {
                 Route::get('/listTunjangan', 'dataTables')->name('listTunjangan');
+                Route::get('/{id}', 'show')->name('show');
                 Route::post('/', 'store')->name('store');
+                Route::put('/{id}', 'update')->name('update');
             });
         });
     });

@@ -135,6 +135,7 @@ class TransaksiItemService
     // * Method for manage total gaji karyawan
     public static function manageTotalGaji($periodeId, $karyawanId)
     {
+        // * Manage data gaji
         $dataGaji = DataGaji::select(
             'tbl_data_gaji.id',
             'tbl_sub_item.total_pengerjaan_item',
@@ -155,7 +156,21 @@ class TransaksiItemService
             array_push($pengerjaanItemGaji, $jmlhPengerjaanItem);
         }
 
-        $totalGaji = array_sum($pengerjaanItemGaji);
+        // * Manage data tunjangan
+        $dataTotalGaji = TotalGaji::where([
+            ['karyawan_id', '=', $karyawanId],
+            ['periode_id', '=', $periodeId],
+        ])
+            ->with(['tunjangan'])
+            ->first();
+
+        $tunjangan = array();
+        foreach ($dataTotalGaji->tunjangan as $value) {
+            array_push($tunjangan, $value->jumlah);
+        }
+
+        // * Jumlahkan total gaji
+        $totalGaji = array_sum($pengerjaanItemGaji) + array_sum($tunjangan);
         TotalGaji::updateOrCreate([
             'karyawan_id' => $karyawanId,
             'periode_id'  => $periodeId,

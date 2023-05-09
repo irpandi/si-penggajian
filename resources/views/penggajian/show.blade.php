@@ -23,6 +23,7 @@
                     <form id="formTemplateTunjangan">
                         @csrf
                         <input type="hidden" name="_method" id="method">
+                        <input type="hidden" name="totalGajiId" value="{{ $data['karyawan']->totalGaji->id }}">
 
                         <div class="input-group mb-3">
                             <input type="text" class="form-control" placeholder="Nama Tunjangan" id="namaTunjangan" name="namaTunjangan">
@@ -207,7 +208,9 @@
         routeRefreshTotalGaji = "{{ route('penggajian.refreshTotalGaji', ':id') }}",
         routeAddTunjangan = "{{ route('tunjangan.store') }}",
         routeListTunjangan = "{{ route('tunjangan.listTunjangan') }}",
-        totalGajiId = $('#totalGajiId').val();
+        totalGajiId = $('#totalGajiId').val(),
+        routeShowTunjangan = "{{ route('tunjangan.show', ':id') }}",
+        routeUpdateTunjangan = "{{ route('tunjangan.update', ':id') }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/showPenggajian.js?nocache='.time()) }}"></script>
 @if(session('message'))

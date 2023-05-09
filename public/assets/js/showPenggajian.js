@@ -67,6 +67,32 @@ $(function () {
         customSweetAlertConfirm('Apakah Anda Yakin ?', 'Ya', 'Tidak', dataAjax, refreshTotalGaji());
         routeDestroyGaji = routeDestroyGaji.replace(id, ':id');
     });
+
+    // * For show modal edit tunjangan
+    $(this).on('click', '.btnEditTunjangan', function () {
+        let id = $(this).data('id');
+        routeShowTunjangan = routeShowTunjangan.replace(':id', id);
+
+        $.ajax({
+            url: routeShowTunjangan,
+            type: 'GET',
+            success: function (res) {
+                fillTunjangan(res);
+            }, error: function (err) {
+                console.log(err);
+            }
+        });
+
+        routeShowTunjangan = routeShowTunjangan.replace(id, ':id');
+        routeUpdateTunjangan = routeUpdateTunjangan.replace(':id', id);
+
+        $('#titleModal').text('Edit Tunjangan');
+        $('#formTemplateTunjangan').attr('action', routeUpdateTunjangan);
+        $('#formTemplateTunjangan').attr('method', 'post');
+        $('#method').val('put');
+
+        routeUpdateTunjangan = routeUpdateTunjangan.replace(id, ':id');
+    });
 });
 
 // * for fill data tunjangan in modal
