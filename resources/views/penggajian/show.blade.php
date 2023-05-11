@@ -51,146 +51,148 @@
 
 @section('content')
     <section class="content">
-        <div class="container">
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show errorAlert" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-    
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+        @if ($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show errorAlert" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-            <input type="hidden" id="karyawanId" value="{{ $data['karyawan']->id }}">
-            <input type="hidden" id="periodeId" value="{{ $data['periode']->id }}">
-            <input type="hidden" id="totalGajiId" value="{{ $data['karyawan']->totalGaji->id }}">
-            <div class="row">
-                {{-- Data Karyawan --}}
-                <div class="col-md-12">
-                    <div class="card card-outline card-info">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h4>Data Karyawan</h4>
-                            </div>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <input type="hidden" id="karyawanId" value="{{ $data['karyawan']->id }}">
+        <input type="hidden" id="periodeId" value="{{ $data['periode']->id }}">
+        <input type="hidden" id="totalGajiId" value="{{ $data['karyawan']->totalGaji->id }}">
+        <div class="row">
+            {{-- Data Karyawan --}}
+            <div class="col-md-12">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>Data Karyawan</h4>
                         </div>
 
-                        <div class="card-body">
-                            <table class="table">
-                                <tr>
-                                    <td>NIK</td>
-                                    <td>:</td>
-                                    <td>{{ $data['karyawan']->nik }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Nama</td>
-                                    <td>:</td>
-                                    <td>{{ $data['karyawan']->nama }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Jenis Kelamin</td>
-                                    <td>:</td>
-                                    <td>{{ ucwords($data['karyawan']->jenis_kelamin) }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Tempat, Tanggal Lahir</td>
-                                    <td>:</td>
-                                    <td>{{ $data['karyawan']->tempat_lahir }}, {{ General::manageDate('Y-m-d', $data['karyawan']->tgl_lahir, 'd/m/Y') }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Status</td>
-                                    <td>:</td>
-                                    <td>
-                                        @if($data['karyawan']->status == 1)
-                                            Aktif
-                                        @else
-                                            Non Aktif
-                                        @endif
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Periode</td>
-                                    <td>:</td>
-                                    <td>{{ General::manageDate('Y-m-d', $data['periode']->tgl_periode, 'd/m/Y') }}</td>
-                                </tr>
-
-                                <tr>
-                                    <td>Total Gaji</td>
-                                    <td>:</td>
-                                    <td><span id="totalGaji">{{ General::formaterNumber($data['karyawan']->totalGaji->total, 0) }}</span></td>
-                                </tr>
-                            </table>
+                        <div class="card-tools">
+                            <a href="{{ route('export.penggajian', ['karyawanId' => $data['karyawan']->id, 'periodeId' => $data['periode']->id]) }}" target="_blank" class="btn btn-sm btn-danger">Export</a>
                         </div>
                     </div>
-                </div>
 
-                {{-- Data Gaji --}}
-                <div class="col-md-12">
-                    <div class="card card-outline card-info">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h4>Data Gaji</h4>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <td>NIK</td>
+                                <td>:</td>
+                                <td>{{ $data['karyawan']->nik }}</td>
+                            </tr>
 
-                        <div class="card-body">
-                            <table id="tblGaji" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Barang</th>
-                                        <th>Item</th>
-                                        <th>Harga</th>
-                                        <th>Total Pengerjaan Item</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
+                            <tr>
+                                <td>Nama</td>
+                                <td>:</td>
+                                <td>{{ $data['karyawan']->nama }}</td>
+                            </tr>
 
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                            <tr>
+                                <td>Jenis Kelamin</td>
+                                <td>:</td>
+                                <td>{{ ucwords($data['karyawan']->jenis_kelamin) }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Tempat, Tanggal Lahir</td>
+                                <td>:</td>
+                                <td>{{ $data['karyawan']->tempat_lahir }}, {{ General::manageDate('Y-m-d', $data['karyawan']->tgl_lahir, 'd/m/Y') }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Status</td>
+                                <td>:</td>
+                                <td>
+                                    @if($data['karyawan']->status == 1)
+                                        Aktif
+                                    @else
+                                        Non Aktif
+                                    @endif
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Periode</td>
+                                <td>:</td>
+                                <td>{{ General::manageDate('Y-m-d', $data['periode']->tgl_periode, 'd/m/Y') }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Total Gaji</td>
+                                <td>:</td>
+                                <td><span id="totalGaji">{{ General::formaterNumber($data['karyawan']->totalGaji->total, 0) }}</span></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
+            </div>
 
-                {{-- Data Tunjangan --}}
-                <div class="col-md-12">
-                    <div class="card card-outline card-info">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h4>Data Tunjangan</h4>
-                            </div>
+            {{-- Data Gaji --}}
+            <div class="col-md-12">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>Data Gaji</h4>
+                        </div>
+                    </div>
 
-                            <div class="card-tools">
-                                <a href="#" class="btn btn-sm btn-primary" id="btnTambahTunjangan" data-target=".modalTemplateTunjangan" data-toggle="modal">
-                                    <i class="fa fa-plus-circle"></i>
-                                    Tambah Tunjangan
-                                </a>
-                            </div>
+                    <div class="card-body">
+                        <table id="tblGaji" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Barang</th>
+                                    <th>Item</th>
+                                    <th>Harga</th>
+                                    <th>Total Pengerjaan Item</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Data Tunjangan --}}
+            <div class="col-md-12">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>Data Tunjangan</h4>
                         </div>
 
-                        <div class="card-body">
-                            <table id="tblTunjangan" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Jumlah</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody></tbody>
-                            </table>
+                        <div class="card-tools">
+                            <a href="#" class="btn btn-sm btn-primary" id="btnTambahTunjangan" data-target=".modalTemplateTunjangan" data-toggle="modal">
+                                <i class="fa fa-plus-circle"></i>
+                                Tambah Tunjangan
+                            </a>
                         </div>
+                    </div>
+
+                    <div class="card-body">
+                        <table id="tblTunjangan" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>Jumlah</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>

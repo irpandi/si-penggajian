@@ -18,4 +18,9 @@ class TotalGaji extends Model
     {
         return $this->hasMany(Tunjangan::class, 'total_gaji_id', 'id');
     }
+
+    public function periode()
+    {
+        return $this->hasOne(Periode::class, 'id', 'periode_id');
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PenggajianController;
@@ -111,6 +112,14 @@ Route::middleware('login')->group(function () {
                 Route::post('/', 'store')->name('store');
                 Route::put('/{id}', 'update')->name('update');
                 Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+        });
+    });
+
+    Route::controller(ExportController::class)->group(function () {
+        Route::prefix('export')->group(function () {
+            Route::name('export.')->group(function () {
+                Route::get('/exportPenggajian/{karyawanId}/{periodeId}', 'exportPenggajian')->name('penggajian');
             });
         });
     });
