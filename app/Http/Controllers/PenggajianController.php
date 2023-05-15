@@ -219,6 +219,7 @@ class PenggajianController extends Controller
                 ['tbl_barang.periode_id', '=', $periodeId],
                 ['tbl_data_gaji.karyawan_id', '=', $karyawanId],
             ])
+            ->orderBy('id', 'desc')
             ->get();
 
         return DataTables::of($data)
