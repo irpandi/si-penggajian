@@ -25,17 +25,23 @@
                         <input type="hidden" name="_method" id="method">
                         <input type="hidden" name="totalGajiId" value="{{ $data['karyawan']->totalGaji->id }}">
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nama Tunjangan" id="namaTunjangan" name="namaTunjangan">
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Nama Tunjangan</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Nama Tunjangan" id="namaTunjangan" name="namaTunjangan">
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="number" class="form-control" placeholder="Jumlah Tunjangan" id="jumlahTunjangan" name="jumlahTunjangan">
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Jumlah Tunjangan</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" placeholder="Jumlah Tunjangan" id="jumlahTunjangan" name="jumlahTunjangan">
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
                     </form>

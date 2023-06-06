@@ -19,17 +19,23 @@ $(function () {
                     </div>
 
                     <div class="card-body">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nama Item" id="namaItem" name="namaItem[]">
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Nama Item</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Nama Item" id="namaItem" name="namaItem[]">
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="number" class="form-control" placeholder="Harga Item" id="hargaItem" name="hargaItem[]">
-                            <div class="input-group-text">
-                                <i class="fas fa-cog"></i>
+                        <div class="form-group">
+                            <label>Harga Item</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" placeholder="Harga Item" id="hargaItem" name="hargaItem[]">
+                                <div class="input-group-text">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
                             </div>
                         </div>
                     </div>

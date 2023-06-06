@@ -34,31 +34,31 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ url('/') }}" class="nav-link">
+                    <a href="{{ url('/') }}" class="nav-link {{ (request()->is('/')) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-home"></i>
                         <p>Home</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/periode') }}" class="nav-link">
+                    <a href="{{ url('/periode') }}" class="nav-link {{ (request()->is('periode') || request()->is('periode/*')) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-calendar"></i>
                         <p>Data Periode</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/karyawan') }}" class="nav-link">
+                    <a href="{{ url('/karyawan') }}" class="nav-link {{ (request()->is('karyawan') || request()->is('karyawan/*')) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-table"></i>
                         <p>Data Karyawan</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/barang') }}" class="nav-link">
+                    <a href="{{ url('/barang') }}" class="nav-link {{ (request()->is('barang') || request()->is('barang/*')) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-table"></i>
                         <p>Data Barang</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/penggajian') }}" class="nav-link">
+                    <a href="{{ url('/penggajian') }}" class="nav-link {{ (request()->is('penggajian') || request()->is('penggajian/*')) ? 'active' : '' }}">
                         <i class="nav-icon fa fa-table"></i>
                         <p>Data Penggajian</p>
                     </a>

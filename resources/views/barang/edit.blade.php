@@ -35,33 +35,45 @@
                         </div>
     
                         <div class="card-body">
-                            <div class="input-group mb-3">
-                                <select class="form-control" id="tglPeriode">
-                                    <option></option>
-                                </select>
-                                <div class="input-group-text">
-                                    <i class="fa fa-calendar-alt"></i>
+                            <div class="form-group">
+                                <label>Tanggal Periode</label>
+                                <div class="input-group mb-3">
+                                    <select class="form-control" id="tglPeriode">
+                                        <option></option>
+                                    </select>
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar-alt"></i>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama" value="{{ $data['barang']->nama }}" required>
-                                <div class="input-group-text">
-                                    <i class="fas fa-table"></i>
+                            <div class="form-group">
+                                <label>Nama Barang</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama" value="{{ $data['barang']->nama }}" required>
+                                    <div class="input-group-text">
+                                        <i class="fas fa-table"></i>
+                                    </div>
                                 </div>
                             </div>
     
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Merk Barang" id="merk" name="merk" value="{{ $data['barang']->merk }}" required>
-                                <div class="input-group-text">
-                                    <i class="fas fa-toolbox"></i>
+                            <div class="form-group">
+                                <label>Merk Barang</label>
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="Merk Barang" id="merk" name="merk" value="{{ $data['barang']->merk }}" required>
+                                    <div class="input-group-text">
+                                        <i class="fas fa-toolbox"></i>
+                                    </div>
                                 </div>
                             </div>
     
-                            <div class="input-group mb-3">
-                                <input type="number" class="form-control" placeholder="Total Barang" id="total" name="total" value="{{ $data['barang']->total }}" required>
-                                <div class="input-group-text">
-                                    <i class="fas fa-cog"></i>
+                            <div class="form-group">
+                                <label>Total Barang</label>
+                                <div class="input-group mb-3">
+                                    <input type="number" class="form-control" placeholder="Total Barang" id="total" name="total" value="{{ $data['barang']->total }}" required>
+                                    <div class="input-group-text">
+                                        <i class="fas fa-cog"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -95,17 +107,23 @@
                                                                 </div>
 
                                                                 <div class="card-body">
-                                                                    <div class="input-group mb-3">
-                                                                        <input type="text" class="form-control" placeholder="Nama Item" id="namaItem" name="namaItemUpdate[]" value="{{ $value->nama }}">
-                                                                        <div class="input-group-text">
-                                                                            <i class="fas fa-table"></i>
+                                                                    <div class="form-group">
+                                                                        <label>Nama Item</label>
+                                                                        <div class="input-group mb-3">
+                                                                            <input type="text" class="form-control" placeholder="Nama Item" id="namaItem" name="namaItemUpdate[]" value="{{ $value->nama }}">
+                                                                            <div class="input-group-text">
+                                                                                <i class="fas fa-table"></i>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                 
-                                                                    <div class="input-group mb-3">
-                                                                        <input type="number" class="form-control" placeholder="Harga Item" id="hargaItem" name="hargaItemUpdate[]" value="{{ $value->harga }}">
-                                                                        <div class="input-group-text">
-                                                                            <i class="fas fa-cog"></i>
+                                                                    <div class="form-group">
+                                                                        <label>Harga Item</label>
+                                                                        <div class="input-group mb-3">
+                                                                            <input type="number" class="form-control" placeholder="Harga Item" id="hargaItem" name="hargaItemUpdate[]" value="{{ $value->harga }}">
+                                                                            <div class="input-group-text">
+                                                                                <i class="fas fa-dollar-sign"></i>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>

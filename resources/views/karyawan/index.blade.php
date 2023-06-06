@@ -6,7 +6,7 @@
 @section("modal")
     {{-- Modal Template --}}
     <div class="modal fade modalTemplate">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="titleModal"></h4>
@@ -20,63 +20,87 @@
                         @csrf
                         <input type="hidden" name="_method" id="method">
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="NIK" id="nik" name="nik">
-                            <div class="input-group-text">
-                                <i class="fas fa-user"></i>
+                        <div class="form-group">
+                            <label>NIK</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="NIK" id="nik" name="nik">
+                                <div class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nama Karyawan" id="nameKaryawan" name="nameKaryawan">
-                            <div class="input-group-text">
-                                <i class="fas fa-user"></i>
+                        <div class="form-group">
+                            <label>Nama Karyawan</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Nama Karyawan" id="nameKaryawan" name="nameKaryawan">
+                                <div class="input-group-text">
+                                    <i class="fas fa-user"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Tempat Lahir" id="tmptLahir" name="tmptLahir">
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Tempat Lahir</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Tempat Lahir" id="tmptLahir" name="tmptLahir">
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Tanggal Lahir" id="tglLahir" data-target="tglLahir" data-toggle="datetimepicker" name="tglLahir">
-                            <div class="input-group-text" data-target="#tglLahir" data-toggle="datetimepicker">
-                                <i class="fa fa-calendar-alt"></i>
+                        <div class="form-group">
+                            <label>Tanggal Lahir</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Tanggal Lahir" id="tglLahir" data-target="tglLahir" data-toggle="datetimepicker" name="tglLahir">
+                                <div class="input-group-text" data-target="#tglLahir" data-toggle="datetimepicker">
+                                    <i class="fa fa-calendar-alt"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <select class="form-control select2Default select2Css" id="status" name="status">
-                                <option value="1">Aktif</option>
-                                <option value="0">Non Aktif</option>
-                            </select>
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="input-group mb-3">
+                                <select class="form-control select2Default select2Css" id="status" name="status">
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Non Aktif</option>
+                                </select>
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <select class="form-control select2Default select2Css" id="jenisKelamin" name="jenisKelamin">
-                                <option value="pria">Pria</option>
-                                <option value="wanita">Wanita</option>
-                            </select>
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <div class="input-group mb-3">
+                                <select class="form-control select2Default select2Css" id="jenisKelamin" name="jenisKelamin">
+                                    <option value="pria">Pria</option>
+                                    <option value="wanita">Wanita</option>
+                                </select>
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nomor Handphone" id="noHp" name="noHp">
-                            <div class="input-group-text">
-                                <i class="fas fa-address-book"></i>
+                        <div class="form-group">
+                            <label>No Hp</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Nomor Handphone" id="noHp" name="noHp">
+                                <div class="input-group-text">
+                                    <i class="fas fa-address-book"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <textarea type="text" class="form-control" placeholder="Alamat" name="alamat" id="alamat"></textarea>
+                        <div class="form-group">
+                            <label>Alamat</label>
+                            <div class="input-group mb-3">
+                                <textarea type="text" class="form-control" placeholder="Alamat" name="alamat" id="alamat"></textarea>
+                            </div>
                         </div>
                     </form>
                 </div>

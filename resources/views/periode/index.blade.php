@@ -20,6 +20,7 @@
                         @csrf
                         <input type="hidden" name="_method" id="method">
                         <div class="form-group">
+                            <label>Tanggal Periode</label>
                             <div class="input-group date" id="periodeDate" data-target-input="nearest">
                                 <input type="text" name="tglPeriode" class="form-control datetimepicker-input" placeholder="Pilih tanggal" id="inputPeriodeDate" data-target="#periodeDate" data-toggle="datetimepicker">
                                 <div class="input-group-append" data-target="#periodeDate" data-toggle="datetimepicker">

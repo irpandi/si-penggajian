@@ -20,31 +20,43 @@
                         @csrf
                         <input type="hidden" name="_method" id="method">
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Tanggal Periode" id="tglPeriode" name="tglPeriode">
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Tanggal Periode</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Tanggal Periode" id="tglPeriode" name="tglPeriode">
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama">
-                            <div class="input-group-text">
-                                <i class="fas fa-table"></i>
+                        <div class="form-group">
+                            <label>Nama Barang</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Nama Barang" id="nama" name="nama">
+                                <div class="input-group-text">
+                                    <i class="fas fa-table"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Merk Barang" id="merk" name="merk">
-                            <div class="input-group-text">
-                                <i class="fas fa-toolbox"></i>
+                        <div class="form-group">
+                            <label>Merk Barang</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Merk Barang" id="merk" name="merk">
+                                <div class="input-group-text">
+                                    <i class="fas fa-toolbox"></i>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="input-group mb-3">
-                            <input type="number" class="form-control" placeholder="Total Barang" id="total" name="total">
-                            <div class="input-group-text">
-                                <i class="fas fa-cog"></i>
+                        <div class="form-group">
+                            <label>Total Barang</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" placeholder="Total Barang" id="total" name="total">
+                                <div class="input-group-text">
+                                    <i class="fas fa-cog"></i>
+                                </div>
                             </div>
                         </div>
                     </form>
