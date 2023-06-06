@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    container_name: si-penggajian
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env
+    ports: 
+      - 8000:8000
+    volumes: 
+      - .:/app/si-penggajian
+    command: "php artisan serve --host 0.0.0.0"

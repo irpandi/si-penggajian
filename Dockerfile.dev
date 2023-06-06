@@ -1,0 +1,18 @@
+FROM php:8.0.2-alpine3.12
+WORKDIR /app/si-penggajian
+
+RUN apk update
+RUN apk add curl
+
+# Install composer
+RUN curl -s https://getcomposer.org/installer | php
+RUN mv composer.phar /usr/local/bin/composer
+
+# Setup Projects
+COPY . .
+COPY .env.example .env
+RUN set COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install
+RUN php artisan key:generate
+
+EXPOSE 8000

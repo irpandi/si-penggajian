@@ -1,0 +1,5 @@
+Dockerfile.dev
+vendor
+.env
+docker-compose-local.yaml
+.dockerignore
