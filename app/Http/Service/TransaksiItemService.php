@@ -10,6 +10,7 @@ use App\Models\SubItem;
 use App\Models\TotalGaji;
 use App\Models\TransaksiItem;
 use DB;
+use Illuminate\Validation\ValidationException;
 
 class TransaksiItemService
 {
@@ -28,60 +29,67 @@ class TransaksiItemService
     // * Manage store to database for add penggajian
     public static function storePenggajian($data)
     {
-        DB::transaction(function () use ($data) {
-            $tglPeriode          = $data['tglPeriode'];
-            $karyawan            = $data['karyawan'];
-            $barang              = $data['barang'];
-            $item                = $data['item'];
-            $totalPengerjaanItem = $data['totalPengerjaanItem'];
+        try {
+            DB::transaction(function () use ($data) {
+                $tglPeriode          = $data['tglPeriode'];
+                $karyawan            = $data['karyawan'];
+                $barang              = $data['barang'];
+                $item                = $data['item'];
+                $totalPengerjaanItem = $data['totalPengerjaanItem'];
 
-            // * Validation custom for item
-            $validItem = self::validationItem($item, $totalPengerjaanItem, $tglPeriode);
-            if ($validItem == self::$msgPengerjaanItem) {
-                return self::$msgPengerjaanItem;
-            } else if ($validItem == self::$msgTmpBarangNol) {
-                return self::$msgTmpBarangNol;
-            }
+                // * Validation custom for item
+                $validItem = self::validationItem($item, $totalPengerjaanItem, $tglPeriode);
+                if ($validItem == self::$msgPengerjaanItem) {
+                    throw ValidationException::withMessages([
+                        'error' => self::$msgPengerjaanItem,
+                    ]);
+                } else if ($validItem == self::$msgTmpBarangNol) {
+                    throw ValidationException::withMessages([
+                        'error' => self::$msgTmpBarangNol,
+                    ]);
+                }
 
-            $item = Item::findOrFail($item);
+                $item = Item::findOrFail($item);
 
-            // * Create sub item data for penggajian
-            $createSubItem = SubItem::create([
-                'item_id'               => $item->id,
-                'total_pengerjaan_item' => $totalPengerjaanItem,
-            ]);
-
-            // * Create transactions for tmp barang
-            $dataTrx = [
-                'itemId'    => $item->id,
-                'subItemId' => $createSubItem->id,
-            ];
-            $dataTrx['beforeTmp'] = $item->total_tmp_barang;
-
-            $penguranganItem = $item->total_tmp_barang - $totalPengerjaanItem;
-            Item::where('id', $item->id)
-                ->update([
-                    'total_tmp_barang' => $penguranganItem,
+                // * Create sub item data for penggajian
+                $createSubItem = SubItem::create([
+                    'item_id'               => $item->id,
+                    'total_pengerjaan_item' => $totalPengerjaanItem,
                 ]);
-            $dataAfterItem = Item::findOrFail($item->id);
 
-            $dataTrx['afterTmp']   = $dataAfterItem->total_tmp_barang;
-            $dataTrx['selisihTmp'] = $totalPengerjaanItem;
+                // * Create transactions for tmp barang
+                $dataTrx = [
+                    'itemId'    => $item->id,
+                    'subItemId' => $createSubItem->id,
+                ];
+                $dataTrx['beforeTmp'] = $item->total_tmp_barang;
 
-            self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemTambah);
-            self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
+                $penguranganItem = $item->total_tmp_barang - $totalPengerjaanItem;
+                Item::where('id', $item->id)
+                    ->update([
+                        'total_tmp_barang' => $penguranganItem,
+                    ]);
+                $dataAfterItem = Item::findOrFail($item->id);
 
-            // * Create data gaji for karyawan
-            DataGaji::create([
-                'karyawan_id' => $karyawan,
-                'sub_item_id' => $createSubItem->id,
-            ]);
+                $dataTrx['afterTmp']   = $dataAfterItem->total_tmp_barang;
+                $dataTrx['selisihTmp'] = $totalPengerjaanItem;
 
-            // * Hitung total gaji
-            self::manageTotalGaji($tglPeriode, $karyawan);
+                self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemTambah);
+                self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
 
-            return self::$msgStore;
-        }, 5);
+                // * Create data gaji for karyawan
+                DataGaji::create([
+                    'karyawan_id' => $karyawan,
+                    'sub_item_id' => $createSubItem->id,
+                ]);
+
+                // * Hitung total gaji
+                self::manageTotalGaji($tglPeriode, $karyawan);
+            }, 5);
+        } catch (ValidationException $ex) {
+            $errorMsg = $ex->validator->errors()->first();
+            return $errorMsg;
+        }
     }
 
     // * Manage transaksi penggajian
@@ -168,8 +176,12 @@ class TransaksiItemService
             ->first();
 
         $tunjangan = array();
-        foreach ($dataTotalGaji->tunjangan as $value) {
-            array_push($tunjangan, $value->jumlah);
+        if (!is_null($dataTotalGaji)) {
+            if (count($dataTotalGaji->tunjangan) > 0) {
+                foreach ($dataTotalGaji->tunjangan as $value) {
+                    array_push($tunjangan, $value->jumlah);
+                }
+            }
         }
 
         // * Jumlahkan total gaji
@@ -185,83 +197,90 @@ class TransaksiItemService
     // * Manage update to database for edit penggajian
     public static function updatePenggajian($data)
     {
-        DB::transaction(function () use ($data) {
-            $subItemId           = $data['subItemId'];
-            $tglPeriode          = $data['tglPeriode'];
-            $karyawan            = $data['karyawan'];
-            $barang              = $data['barang'];
-            $item                = $data['item'];
-            $totalPengerjaanItem = $data['totalPengerjaanItem'];
+        try {
+            DB::transaction(function () use ($data) {
+                $subItemId           = $data['subItemId'];
+                $tglPeriode          = $data['tglPeriode'];
+                $karyawan            = $data['karyawan'];
+                $barang              = $data['barang'];
+                $item                = $data['item'];
+                $totalPengerjaanItem = $data['totalPengerjaanItem'];
 
-            // * Data before
-            $item    = Item::findOrFail($item);
-            $subItem = SubItem::findOrFail($subItemId);
+                // * Data before
+                $item    = Item::findOrFail($item);
+                $subItem = SubItem::findOrFail($subItemId);
 
-            $beforeTotalPengerjaanItem = $subItem->total_pengerjaan_item;
-            $tmpBarang                 = $item->total_tmp_barang;
+                $beforeTotalPengerjaanItem = $subItem->total_pengerjaan_item;
+                $tmpBarang                 = $item->total_tmp_barang;
 
-            if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
-                $cekInputTotalPengerjaanItem = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
-            } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
-                $cekInputTotalPengerjaanItem = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
-            } else {
-                $cekInputTotalPengerjaanItem = $totalPengerjaanItem;
-            }
+                if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
+                    $cekInputTotalPengerjaanItem = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
+                } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
+                    $cekInputTotalPengerjaanItem = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
+                } else {
+                    $cekInputTotalPengerjaanItem = $totalPengerjaanItem;
+                }
 
-            // * Validation custom for item
-            $validItem = self::validationItem($item->id, $cekInputTotalPengerjaanItem, $tglPeriode);
-            if ($validItem == self::$msgPengerjaanItem) {
-                return self::$msgPengerjaanItem;
-            } else if ($validItem == self::$msgTmpBarangNol) {
-                return self::$msgTmpBarangNol;
-            }
+                // * Validation custom for item
+                $validItem = self::validationItem($item->id, $cekInputTotalPengerjaanItem, $tglPeriode);
+                if ($validItem == self::$msgPengerjaanItem) {
+                    throw ValidationException::withMessages([
+                        'error' => self::$msgPengerjaanItem,
+                    ]);
+                } else if ($validItem == self::$msgTmpBarangNol) {
+                    throw ValidationException::withMessages([
+                        'error' => self::$msgTmpBarangNol,
+                    ]);
+                }
 
-            $dataTrx = [
-                'itemId'    => $item->id,
-                'subItemId' => $subItem->id,
-            ];
+                $dataTrx = [
+                    'itemId'    => $item->id,
+                    'subItemId' => $subItem->id,
+                ];
 
-            if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) { // * subitem berkurang, item bertambah
-                $selisihTmpBarang = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
-                $totalTmpBarang   = $tmpBarang - $selisihTmpBarang;
-            } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) { // * item berkurang, subitem bertambah
-                $selisihTmpBarang = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
-                $totalTmpBarang   = $tmpBarang + $selisihTmpBarang;
-            } else { // * Tetep sama
-                $selisihTmpBarang = $beforeTotalPengerjaanItem;
-                $totalTmpBarang   = $tmpBarang;
-            }
+                if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) { // * subitem berkurang, item bertambah
+                    $selisihTmpBarang = $totalPengerjaanItem - $beforeTotalPengerjaanItem;
+                    $totalTmpBarang   = $tmpBarang - $selisihTmpBarang;
+                } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) { // * item berkurang, subitem bertambah
+                    $selisihTmpBarang = $beforeTotalPengerjaanItem - $totalPengerjaanItem;
+                    $totalTmpBarang   = $tmpBarang + $selisihTmpBarang;
+                } else { // * Tetep sama
+                    $selisihTmpBarang = $beforeTotalPengerjaanItem;
+                    $totalTmpBarang   = $tmpBarang;
+                }
 
-            Item::where('id', $item->id)
-                ->update([
-                    'total_tmp_barang' => $totalTmpBarang,
-                ]);
+                Item::where('id', $item->id)
+                    ->update([
+                        'total_tmp_barang' => $totalTmpBarang,
+                    ]);
 
-            SubItem::where('id', $subItem->id)
-                ->update([
-                    'total_pengerjaan_item' => $totalPengerjaanItem,
-                ]);
+                SubItem::where('id', $subItem->id)
+                    ->update([
+                        'total_pengerjaan_item' => $totalPengerjaanItem,
+                    ]);
 
-            $dataTrx['beforeTmp'] = $item->total_tmp_barang;
+                $dataTrx['beforeTmp'] = $item->total_tmp_barang;
 
-            // * Data after
-            $item = Item::findOrFail($item->id);
+                // * Data after
+                $item = Item::findOrFail($item->id);
 
-            $dataTrx['afterTmp']   = $item->total_tmp_barang;
-            $dataTrx['selisihTmp'] = $selisihTmpBarang;
+                $dataTrx['afterTmp']   = $item->total_tmp_barang;
+                $dataTrx['selisihTmp'] = $selisihTmpBarang;
 
-            // * Log to transaksi item
-            if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
-                self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemTambah);
-            } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
-                self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
-            }
+                // * Log to transaksi item
+                if ($beforeTotalPengerjaanItem < $totalPengerjaanItem) {
+                    self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemTambah);
+                } else if ($beforeTotalPengerjaanItem > $totalPengerjaanItem) {
+                    self::transaksiPenggajian($dataTrx, self::$msgTransaksiItemKurang);
+                }
 
-            // * Hitung total gaji
-            self::manageTotalGaji($tglPeriode, $karyawan);
-
-            return self::$msgUpdate;
-        }, 5);
+                // * Hitung total gaji
+                self::manageTotalGaji($tglPeriode, $karyawan);
+            }, 5);
+        } catch (ValidationException $ex) {
+            $errorMsg = $ex->validator->errors()->first();
+            return $errorMsg;
+        }
     }
 
     // * Method for delete data penggajian
