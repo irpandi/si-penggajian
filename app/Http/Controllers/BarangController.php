@@ -45,6 +45,7 @@ class BarangController extends Controller
                     <div class="btn-group">
                         <a class="btn btn-sm btn-success" href="' . route('barang.edit', $row->id) . '">Edit</a>
                         <button type="button" class="btn btn-sm btn-info btnView" data-target=".modalTemplate" data-id="' . $row->id . '" data-toggle="modal">Lihat</button>
+                        <a class="btn btn-sm btn-warning btnCopy" data-id="' . $row->id . '" data-toggle="modal" href="#">Copy</a>
                     </div>
                 ';
 
@@ -280,6 +281,7 @@ class BarangController extends Controller
                 $subItem = $data[$i]->subItem;
 
                 for ($j = 0; $j < count($subItem); $j++) {
+                    // * Jika data item total_tmp_barang sudah ada yg pakai di table sub_item
                     if ($subItem[$j] && $subItem[$j]->total_pengerjaan_item > 0) {
                         $status = false;
                         break;
@@ -289,5 +291,14 @@ class BarangController extends Controller
         }
 
         return $status;
+    }
+
+    // * Method for copy data barang
+    public function copyBarang($id)
+    {
+        $data    = Barang::find($id);
+        $newData = $data->replicateItem();
+
+        return response()->json($id);
     }
 }

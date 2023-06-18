@@ -22,4 +22,23 @@ class Barang extends Model
     {
         return $this->hasOne(Periode::class, 'id', 'periode_id');
     }
+
+    // * Method function for replicate item
+    public function replicateItem()
+    {
+        $clone = $this->replicate()->fill([
+            'nama' => $this->nama . '-copy',
+        ]);
+        $clone->push();
+
+        foreach ($this->item as $value) {
+            $clone->item()->create([
+                'nama'             => $value->nama,
+                'harga'            => $value->harga,
+                'total_tmp_barang' => $this->total,
+            ]);
+        }
+
+        $clone->save();
+    }
 }

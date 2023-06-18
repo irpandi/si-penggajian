@@ -57,6 +57,33 @@ $(function () {
 
         routeShow = routeShow.replace(id, ':id');
     });
+
+    // * For copy data barang
+    $(this).on('click', '.btnCopy', function () {
+        let id = $(this).data('id');
+
+        routeCopyBarang = routeCopyBarang.replace(":id", id);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+
+        $.ajax({
+            url: routeCopyBarang,
+            type: 'POST',
+            success: function (res) {
+                customSweetAlert('success', 'Sukses', 'Copy Data Barang Berhasil');
+                $('#index').DataTable().ajax.reload();
+            }, error: function (err) {
+                console.log(err);
+                customSweetAlert('error', 'Failed', 'Copy Data Barang Gagal');
+            }
+        });
+
+        routeCopyBarang = routeCopyBarang.replace(id, ':id');
+    });
 });
 
 // * For fill data barang in modal

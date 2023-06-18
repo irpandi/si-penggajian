@@ -119,7 +119,9 @@
 @section('script')
 <script type="text/javascript">
     var routeList = "{{ route('barang.list') }}",
-        routeShow = "{{ route('barang.show', ':id') }}";
+        routeShow = "{{ route('barang.show', ':id') }}",
+        routeCopyBarang = "{{ route('barang.copyBarang', ':id') }}",
+        csrfToken = "{{ csrf_token() }}";
 </script>
 <script type="text/javascript" src="{{ asset('assets/js/barang.js?nocache='.time()) }}"></script>
 @if(session('message'))

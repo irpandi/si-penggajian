@@ -79,6 +79,7 @@ Route::middleware('login')->group(function () {
                 Route::get('/{id}', 'show')->name('show');
                 Route::put('/{id}', 'update')->name('update');
                 Route::delete('/{id}/destroyItem', 'destroyItem')->name('destroy.item');
+                Route::post('/copyBarang/{barangId}', 'copyBarang')->name('copyBarang');
             });
         });
     });
